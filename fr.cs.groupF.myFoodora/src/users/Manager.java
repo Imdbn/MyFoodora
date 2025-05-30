@@ -1,19 +1,16 @@
 package users;
+import coreSystem.*;
 
 public class Manager extends User {
 
 	private String surname;
-	private double serviceFee;
-	private double markupPercentage;
-	private double deliveryCost;
+	private CoreSystem coreSystem;
 	//private DeliveryPolicy deliveryPolicy;
 
-	public Manager(String name , String username , String password, String surname, double serviceFee , double markupPercentage , double deliveryCost){//DeliveryPolicy deliveryPolicy) {
+	public Manager(String name , String username , String password, String surname){//DeliveryPolicy deliveryPolicy) {
 		super(name,username,password);
-		this.deliveryCost = deliveryCost;
-		//this.deliveryPolicy = deliveryPolicy;
-		this.markupPercentage = markupPercentage;
-		this.serviceFee = serviceFee;
+		this.surname = surname;
+		this.coreSystem = CoreSystem.getInstance();
 	}
 	public String getSurname() {
 		return surname;
@@ -24,35 +21,6 @@ public class Manager extends User {
 		this.surname = surname;
 	}
 
-
-	public double getServiceFee() {
-		return serviceFee;
-	}
-
-
-	public void setServiceFee(double serviceFee) {
-		this.serviceFee = serviceFee;
-	}
-
-
-	public double getMarkupPercentage() {
-		return markupPercentage;
-	}
-
-
-	public void setMarkupPercentage(double markupPercentage) {
-		this.markupPercentage = markupPercentage;
-	}
-
-
-	public double getDeliveryCost() {
-		return deliveryCost;
-	}
-
-
-	public void setDeliveryCost(double deliveryCost) {
-		this.deliveryCost = deliveryCost;
-	}
 
 
 //	public DeliveryPolicy getDeliveryPolicy() {
@@ -89,19 +57,25 @@ public class Manager extends User {
 	}
 
 
-	public void computeTotalIncome() {
-		// TODO - implement Manager.computeTotalIncome
-		throw new UnsupportedOperationException();
+	public double computeTotalIncome() {
+		double totalIncome = 0;
+			for(Order order : CoreSystem.getOrders() ) {
+				totalIncome += order.getFinalPrice();
+			}
+			return totalIncome;
 	}
 
-	public void computeTotalProfit() {
-		// TODO - implement Manager.computeTotalProfit
-		throw new UnsupportedOperationException();
+	public double computeTotalProfit() {
+		double totalProfit = 0;
+			for(Order order : CoreSystem.getOrders() ) {
+				totalProfit += order.getProfit();
+			}
+			return totalProfit;
 	}
 
 	public void computeAverageIncomePerCostumer() {
-		// TODO - implement Manager.computeAverageIncomePerCostumer
-		throw new UnsupportedOperationException();
+		double averageIncomePerCostumer = 0;
+			
 	}
 
 	public void showSortedRestaurants() {

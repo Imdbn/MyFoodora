@@ -1,17 +1,19 @@
 package users;
 
 import java.util.*;
+import coreSystem.*;
 
 public class Order {
 	// ========================================================================================================================================================================================
 	// Fields
 	private int id;
+	private CoreSystem coreSystem;
 	private Calendar orderDate = Calendar.getInstance();
 	//private HashMap<Meal, Integer> orderedMeals = new HashMap<>();
 	//private HashMap<Dish, Integer> orderedDishes = new HashMap<>();
-	private double price;
-	private double totalPrice;
-	private double profit;
+	private double price = 0;
+	private double finalPrice = 0;
+	private double profit = 0;
 	private Restaurant restaurant;
 	private Customer customer;
 	private Courier courier;
@@ -25,6 +27,7 @@ public class Order {
 		this.orderDate = Calendar.getInstance();
 		this.customer = customer;
 		this.restaurant = restaurant;
+		this.coreSystem = CoreSystem.getInstance();
 	}
 		
 	// ========================================================================================================================================================================================
@@ -69,12 +72,12 @@ public class Order {
 		this.price = price;
 	}
 
-	public double getTotalPrice() {
-		return totalPrice;
+	public double getFinalPrice() {
+		return finalPrice;
 	}
 
-	public void setTotalPrice(double totalPrice) {
-		this.totalPrice = totalPrice;
+	public void setFinalPrice(double totalPrice) {
+		this.finalPrice = totalPrice;
 	}
 
 	public double getProfit() {
@@ -127,27 +130,18 @@ public class Order {
 		// TODO - implement Order.addItemToOrder
 		throw new UnsupportedOperationException();
 	}
+	
+	public void computeProfit() {
+		double profit = this.getPrice()*coreSystem.getMarkUpPercentage() + coreSystem.getServiceFee() - coreSystem.getDeliveryCost();
+		this.setProfit(profit);
+	}
+	public double computeAndReturnProfit() {
+		computeProfit();
+		return this.getProfit();
+	}
 
-//	public double priceBeforeDiscounts() {
-//		double price = 0;
-//		for (Map.Entry<Meal,Integer> entry : orderedMeals.entrySet() ) {
-//			price += entry.getKey().getPrice()*entry.getValue();
-//		}
-//		
-//		for (Map.Entry<Dish, Integer> entry : orderedDishes.entrySet() ) {
-//			price += entry.getKey().getPrice()*entry.getValue();
-//		}
-//		
-//	}
 
-//	public double priceAfterDiscounts() {
-//		
-//	}
 
-	/**
-	 * 
-	 * @param totalPrice
-	 */
 	public void submitOrder(double totalPrice) {
 		// TODO - implement Order.submitOrder
 		throw new UnsupportedOperationException();

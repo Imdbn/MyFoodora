@@ -22,6 +22,11 @@ public class Customer extends User {
 		this.phone = phone;
 		this.address = address;
 	}
+	public Customer(String name , String username , String password, String surname) {
+		super(name, username,password);
+		this.surname = surname;
+		this.address = new Coordinate();
+	}
 	
 	public String getSurname() {
 		return surname;

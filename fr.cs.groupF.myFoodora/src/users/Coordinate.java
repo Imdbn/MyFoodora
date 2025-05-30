@@ -1,4 +1,5 @@
 package users;
+import java.util.*;
 /**
  * Coordinate Class a 2d representation of the position of objects using the class
  */
@@ -10,6 +11,13 @@ public class Coordinate {
 		this.xpos = xpos;
 		this.ypos = ypos;
 	}
+	public Coordinate() {
+		Random rand = new Random();
+		this.xpos = rand.nextDouble(1000);
+		this.ypos = rand.nextDouble(1000);
+	}
+	
+	
 	public double getXpos() {
 		return xpos;
 	}

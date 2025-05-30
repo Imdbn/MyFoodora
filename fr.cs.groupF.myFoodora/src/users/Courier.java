@@ -7,12 +7,18 @@ public class Courier extends User{
 	private int deliveryCounter;
 	private boolean onDuty;
 	
-	public Courier(String name,String username, String password,String surname , Coordinate position,String phone, boolean onDuty) {
+	public Courier(String name,String username, String password,String surname , Coordinate position,String phone) {
 		super(name,username,password);
 		this.position = position;
 		this.deliveryCounter = 0;
 		this.phone = phone;
-		this.onDuty = onDuty;
+		
+	}
+	public Courier(String name,String username, String password,String surname,String phone ) {
+		super(name,username,password);
+		this.deliveryCounter = 0;
+		this.phone = phone;
+		this.position = new Coordinate();
 	}
 
 	public String getSurname() {

@@ -16,9 +16,10 @@ public class Restaurant extends User{
 		this.specialDiscount = specialDiscount;
 	}
 	
-	public Restaurant(String name, String username, String password,Menu menu ) {
+	public Restaurant(String name, String username, String password ) {
 		super(name, username,password);
-		this.menu = menu;
+		this.menu = new Menu();
+		this.location = new Coordinate();
 	}
 
 	public double getGenericDiscount() {

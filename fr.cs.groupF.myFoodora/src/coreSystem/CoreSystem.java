@@ -9,16 +9,16 @@ public class CoreSystem {
 	// Creating a Singleton instance of the app
 	private static CoreSystem instance = null;
 	
-	private static List<Customer> customers = new ArrayList<>();
-	private static List<Manager> managers = new ArrayList<>();
-	private static List<Courier> couriers = new ArrayList<>() ;
-	private static List<Restaurant> restaurants = new ArrayList<>();
+	private static Map<String,Customer> customers = new HashMap<>();
+	private static Map<String,Manager> managers = new HashMap<>();
+	private static Map<String,Courier> couriers = new HashMap<>() ;
+	private static Map<String,Restaurant> restaurants = new HashMap<>();
 	private static List<Order> orders = new ArrayList<>();
 	private static Optional<User> currentUser ;
 	private static Optional<UserType> currentUserType ;
 	
 	private double serviceFee ;
-	private double markUpPrecentage;
+	private double markUpPercentage;
 	
 
 	private double deliveryCost;
@@ -29,6 +29,9 @@ public class CoreSystem {
 	private CoreSystem() {
 		currentUser = Optional.empty();
 		currentUserType = Optional.empty();
+		
+        
+		
 	}
 	
 	
@@ -49,60 +52,81 @@ public class CoreSystem {
 	
 	//==========================================================================================================================================================================================
 	// Getters and Setters
-	public static List<Customer> getCustomers() {
-		return customers;
-	}
-
-	public static void setCustomers(List<Customer> customers) {
-		CoreSystem.customers = customers;
-	}
-
-	public static List<Manager> getManagers() {
-		return managers;
-	}
-
-	public static void setManagers(List<Manager> managers) {
-		CoreSystem.managers = managers;
-	}
-
-	public static List<Courier> getCouriers() {
-		return couriers;
-	}
-
-	public static void setCouriers(List<Courier> couriers) {
-		CoreSystem.couriers = couriers;
-	}
-
-	public static List<Restaurant> getRestaurants() {
-		return restaurants;
-	}
-
-	public static void setRestaurants(List<Restaurant> restaurants) {
-		CoreSystem.restaurants = restaurants;
-	}
-
-	public static List<Order> getOrders() {
-		return orders;
-	}
-
-	public static void setOrders(List<Order> orders) {
-		CoreSystem.orders = orders;
-	}
+	
 
 	public double getServiceFee() {
 		return serviceFee;
 	}
 
+	public static Map<String, Customer> getCustomers() {
+		return customers;
+	}
+
+
+
+	public static void setCustomers(Map<String, Customer> customers) {
+		CoreSystem.customers = customers;
+	}
+
+
+
+	public static Map<String, Manager> getManagers() {
+		return managers;
+	}
+
+
+
+	public static void setManagers(Map<String, Manager> managers) {
+		CoreSystem.managers = managers;
+	}
+
+
+
+	public static Map<String, Courier> getCouriers() {
+		return couriers;
+	}
+
+
+
+	public static void setCouriers(Map<String, Courier> couriers) {
+		CoreSystem.couriers = couriers;
+	}
+
+
+
+	public static Map<String, Restaurant> getRestaurants() {
+		return restaurants;
+	}
+
+
+
+	public static void setRestaurants(Map<String, Restaurant> restaurants) {
+		CoreSystem.restaurants = restaurants;
+	}
+
+
+	public static List<Order> getOrders() {
+		return orders;
+	}
+
+
+
+	public static void setOrders(List<Order> orders) {
+		CoreSystem.orders = orders;
+	}
+
+
+
 	public void setServiceFee(double serviceFee) {
 		this.serviceFee = serviceFee;
 	}
 
-	public double getMarkUpPrecentage() {
-		return markUpPrecentage;
+	public double getMarkUpPercentage() {
+		return markUpPercentage;
 	}
 
-	public void setMarkUpPrecentage(double markUpPrecentage) {
-		this.markUpPrecentage = markUpPrecentage;
+	public void setMarkUpPercentage(double markUpPercentage) {
+		this.markUpPercentage = markUpPercentage;
 	}
 
 	public double getDeliveryCost() {
@@ -116,8 +140,13 @@ public class CoreSystem {
 //==============================================================================================================================================================================================
 //Methods
 	
-	
-	
+	public static void addDefaultManagers() {
+		Manager CEO = new Manager("CEO", "Admin", "1234", "Imad");
+        Manager deputy = new Manager("Deputy", "admin", "1234", "Farah");
+    	managers.put(CEO.getUsername(),CEO);
+    	managers.put(deputy.getUsername(),deputy);
+    	System.out.println("Successfully added Default Managers to the system");
+	}
 // Login
 	public String login(String username, String password) throws NoMatchingCredentialsException {
 	    if (tryLogin(managers, username, password, UserType.MANAGER)) {
@@ -135,13 +164,13 @@ public class CoreSystem {
 
 		
 	
-	private <T extends User> boolean tryLogin(List<T> users,String username , String password,UserType typeofuser) {
-		for (T user : users) {
-			if(user.getUsername().equals(username) && user.getPassword().equals(password)) {
-				currentUser = Optional.of(user);
-				currentUserType = Optional.of(typeofuser);
-				return true;
-			}
+	private <T extends User> boolean tryLogin(Map<String,T> users,String username , String password,UserType typeOfUser) {
+		
+		T user = users.get(username);
+		if (user != null && user.getHashedPassword().equals(PasswordHasher.hashPassword(password))) {
+			currentUser = Optional.of(user);
+			currentUserType = Optional.of(typeOfUser);
+			return true;
 		}
 		return false;
 	}
@@ -153,5 +182,61 @@ public class CoreSystem {
 		currentUserType = Optional.empty();
 	}
 	
+	
+	//\\ Manager Methods
+	public void addCustomer(Customer customer) throws PermissionDeniedException {
+		if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
+			customers.put(customer.getUsername(),customer);
+			System.out.println("Successfully added" + customer.getName() +" as a customer to the system");
+		}
+		else 
+			 throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
+	}
+	
+	public void addRestaurant(Restaurant restaurant) throws PermissionDeniedException {
+		if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
+			restaurants.put(restaurant.getUsername(),restaurant);	
+			System.out.println("Successfully added" + restaurant.getName() +" as a restaurant to the system");
+		}
+		else 
+			 throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
+	}
+	
+	
+	public void addCourier(Courier courier) throws PermissionDeniedException {
+		if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
+			couriers.put(courier.getUsername(),courier);
+			System.out.println("Successfully added" + courier.getName() +" as a courier to the system");
+			
+		}
+		else 
+			 throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
+	}
+	
+	
+	public void addOrder(Order order) {
+		orders.add(order);	
+	}
+	
+	
+	
+	
+	//Computing total Income
+	public double computeTotalIncome() throws PermissionDeniedException{
+		if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
+			return ((Manager)currentUser.get()).computeTotalIncome();		
+		}
+		else 
+			 throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
+	}
+	
+	//Computing total Profit
+	public double computeTotalProfit() throws PermissionDeniedException{
+		if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
+			return ((Manager)currentUser.get()).computeTotalProfit();		
+		}
+		else 
+			 throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
+	}
 	
 }
