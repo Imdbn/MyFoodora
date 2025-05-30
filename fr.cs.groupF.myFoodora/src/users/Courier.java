@@ -1,4 +1,4 @@
-package Users;
+package users;
 
 public class Courier extends User{
 	private String surname;

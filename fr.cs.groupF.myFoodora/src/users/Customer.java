@@ -1,4 +1,5 @@
-package Users;
+package users;
+import java.util.*;
 /** 
  * This is the Customer Class inheriting from its parent class User
  */
@@ -7,6 +8,8 @@ public class Customer extends User {
 	private String email ;
 	private String phone ;
 	private Coordinate address;
+	private List<Order> orderHistory = new ArrayList<>(); 
+	private boolean consensus;
 	
 	
 	/**
@@ -52,10 +55,26 @@ public class Customer extends User {
 		this.address = address;
 	}
 	
+	public List<Order> getOrderHistory() {
+		return orderHistory;
+	}
+
+	public void setOrderHistory(ArrayList<Order> orderHistory) {
+		this.orderHistory = orderHistory;
+	}
+	public boolean isConsensus() {
+		return consensus;
+	}
+
+	public void setConsensus(boolean consensus) {
+		this.consensus = consensus;
+	}
+	
 	/**
 	 * Place Order method that allows the Customer to place an order
 	 */
 	public void placeOrder() {
+		
 		
 	}
 	
@@ -83,17 +102,8 @@ public class Customer extends User {
 	public void accessFidelityPoints() {
 		
 	}
-	/**
-	 * giveConsensus method allows the customer to give his consensus to receive notification of new discounts and offers
-	 */
-	public void giveConsensus() {
-		
-	}
-	/**
-	 * removeConsensus method allows the customer to remove his consensus to receive notification of new discounts and offers
-	 */
-	public void removeConsensus() {
-		
-	}
+
+	
+	
 	
 }

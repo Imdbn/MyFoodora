@@ -1,4 +1,4 @@
-package Users;
+package users;
 /** This is the abstract class representing User
  * 
  */

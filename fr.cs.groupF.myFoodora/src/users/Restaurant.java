@@ -1,9 +1,10 @@
-package Users;
+package users;
 import MenuMeals.*;
 
 public class Restaurant extends User{
 	private Coordinate location ;
 	private Menu menu;
+//	private Meal meals;
 	private double genericDiscount = 0.05;
 	private double specialDiscount = 0.1;
 	
@@ -59,9 +60,10 @@ public class Restaurant extends User{
 		this.menu = menu;
 	}
 	
-	public void addDish() {
-		
-	}
+//	public void addDish(Dish dish) {
+//		
+//		
+//	}
 	public void removeDish() {
 		
 	}

@@ -1,4 +1,4 @@
-package Users;
+package users;
 /**
  * Coordinate Class a 2d representation of the position of objects using the class
  */
