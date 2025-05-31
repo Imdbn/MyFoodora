@@ -1,5 +1,5 @@
 package users;
-import MenuMeals.*;
+import menuComponent.*;
 
 public class Restaurant extends User{
 	private Coordinate location ;
