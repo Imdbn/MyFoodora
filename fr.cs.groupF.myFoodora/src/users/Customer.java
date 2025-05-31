@@ -107,6 +107,21 @@ public class Customer extends User {
 	public void accessFidelityPoints() {
 		
 	}
+	
+	
+	@Override
+	public String toString() {
+	    return "Customer{" +
+	            "id=" + getId() +
+	            ", name='" + getName() + '\'' +
+	            ", username='" + getUsername() + '\'' +
+	            ", surname='" + surname + '\'' +
+	            ", email='" + email + '\'' +
+	            ", phone='" + phone + '\'' +
+	            ", address=" + address +
+	            '}';
+	}
+
 
 	
 	

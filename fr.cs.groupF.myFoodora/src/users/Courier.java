@@ -78,6 +78,20 @@ public class Courier extends User{
 	public void refuseDelivery() {
 		
 	}
+	@Override
+	public String toString() {
+	    return "Courier{" +
+	            "id=" + getId() +
+	            ", name='" + getName() + '\'' +
+	            ", username='" + getUsername() + '\'' +
+	            ", surname='" + surname + '\'' +
+	            ", position=" + position +
+	            ", phone='" + phone + '\'' +
+	            ", deliveries=" + deliveryCounter +
+	            ", onDuty=" + onDuty +
+	            '}';
+	}
+
 	
 	
 	

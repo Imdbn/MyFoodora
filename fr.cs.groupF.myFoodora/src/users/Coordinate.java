@@ -42,7 +42,10 @@ public class Coordinate {
 	public double distance(Coordinate coordinate) {
 		return Math.sqrt(Math.pow(coordinate.getXpos()-this.xpos,2)+Math.pow(coordinate.getYpos()-this.ypos,2));
 	}
-	
+	@Override
+	public String toString() {
+	    return "Coordinate(" + xpos + ", " + ypos + ")";
+	}
 	
 	
 

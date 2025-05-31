@@ -7,6 +7,7 @@ public class Restaurant extends User{
 //	private Meal meals;
 	private double genericDiscount = 0.05;
 	private double specialDiscount = 0.1;
+	private int orderCounter = 0 ;
 	
 	public Restaurant(String name, String username, String password, Coordinate location, Menu menu, double genericDiscount, double specialDiscount) {
 		super(name, username, password);
@@ -61,6 +62,15 @@ public class Restaurant extends User{
 		this.menu = menu;
 	}
 	
+	public int getOrderCounter() {
+		return orderCounter;
+	}
+
+	public void setOrderCounter(int orderCounter) {
+		this.orderCounter = orderCounter;
+	}
+
+	
 //	public void addDish(Dish dish) {
 //		
 //		
@@ -72,5 +82,18 @@ public class Restaurant extends User{
 		
 	}
 	
+	@Override
+	public String toString() {
+	    return "Restaurant{" +
+	            "id=" + getId() +
+	            ", name='" + getName() + '\'' +
+	            ", username='" + getUsername() + '\'' +
+	            ", location=" + location +
+	            ", genericDiscount=" + genericDiscount +
+	            ", specialDiscount=" + specialDiscount +
+	            ", menu=" + menu +
+	            '}';
+	}
 
+	
 }

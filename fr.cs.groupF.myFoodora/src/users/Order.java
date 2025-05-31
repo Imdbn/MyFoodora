@@ -22,8 +22,8 @@ public class Order {
 	// ========================================================================================================================================================================================
 	// Constructors 
 	public Order(Customer customer , Restaurant restaurant) {
-		UserIdGenerator idgen = UserIdGenerator.getInstance();
-		this.id = idgen.getNextUserId();
+		OrderIdGenerator idgen = OrderIdGenerator.getInstance();
+		this.id = idgen.getNextOrderId();
 		this.orderDate = Calendar.getInstance();
 		this.customer = customer;
 		this.restaurant = restaurant;
@@ -145,6 +145,20 @@ public class Order {
 	public void submitOrder(double totalPrice) {
 		// TODO - implement Order.submitOrder
 		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public String toString() {
+	    return "Order{" +
+	            "id=" + id +
+	            ", customer=" + (customer != null ? customer.getUsername() : "null") +
+	            ", restaurant=" + (restaurant != null ? restaurant.getUsername() : "null") +
+	            ", courier=" + (courier != null ? courier.getUsername() : "null") +
+	            ", orderDate=" + (orderDate != null ? orderDate.getTime() : "null") +
+	            ", price=" + price +
+	            ", finalPrice=" + finalPrice +
+	            ", profit=" + profit +
+	            '}';
 	}
 
 }

@@ -184,35 +184,40 @@ public class CoreSystem {
 	
 	
 	//\\ Manager Methods
-	public void addCustomer(Customer customer) throws PermissionDeniedException {
+	public void addUser(User user) throws PermissionDeniedException , IllegalArgumentException, UserAlreadyExistsException  {
 		if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
-			customers.put(customer.getUsername(),customer);
-			System.out.println("Successfully added" + customer.getName() +" as a customer to the system");
+			Manager manager = (Manager) currentUser.get();
+			if (user instanceof Customer) {
+		        manager.addCustomer((Customer) user);
+		    } else if (user instanceof Restaurant) {
+		        manager.addRestaurant((Restaurant) user);
+		    } else if (user instanceof Courier) {
+		        manager.addCourier((Courier) user);
+		    } else {
+		        throw new IllegalArgumentException("Unsupported user type: " + user.getClass().getSimpleName());
+		    }
 		}
 		else 
 			 throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
 	}
 	
-	public void addRestaurant(Restaurant restaurant) throws PermissionDeniedException {
+	public void removeUser(User user) throws PermissionDeniedException ,IllegalArgumentException, NoUserExistsException   {
 		if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
-			restaurants.put(restaurant.getUsername(),restaurant);	
-			System.out.println("Successfully added" + restaurant.getName() +" as a restaurant to the system");
+			Manager manager = (Manager) currentUser.get();
+			if (user instanceof Customer) {
+		        manager.removeCustomer((Customer) user);
+		    } else if (user instanceof Restaurant) {
+		        manager.removeRestaurant((Restaurant) user);
+		    } else if (user instanceof Courier) {
+		        manager.removeCourier((Courier) user);
+		    } else {
+		        throw new IllegalArgumentException("Unsupported user type: " + user.getClass().getSimpleName());
+		    }
 		}
 		else 
 			 throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
+	
 	}
-	
-	
-	public void addCourier(Courier courier) throws PermissionDeniedException {
-		if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
-			couriers.put(courier.getUsername(),courier);
-			System.out.println("Successfully added" + courier.getName() +" as a courier to the system");
-			
-		}
-		else 
-			 throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
-	}
-	
 	
 	public void addOrder(Order order) {
 		orders.add(order);	
@@ -230,6 +235,14 @@ public class CoreSystem {
 			 throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
 	}
 	
+	public double computeTotalIncome(Calendar cal1, Calendar cal2) throws PermissionDeniedException{
+		if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
+			return ((Manager)currentUser.get()).computeTotalIncome(cal1, cal2);		
+		}
+		else 
+			 throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
+	}
+	
 	//Computing total Profit
 	public double computeTotalProfit() throws PermissionDeniedException{
 		if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
@@ -238,5 +251,27 @@ public class CoreSystem {
 		else 
 			 throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
 	}
+	public double computeTotalProfit(Calendar cal1 , Calendar cal2) throws PermissionDeniedException{
+		if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
+			return ((Manager)currentUser.get()).computeTotalProfit(cal1 , cal2);		
+		}
+		else 
+			 throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
+	}
 	
+	public double computeAverageIncomePerCostumer() throws PermissionDeniedException{
+		if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
+			return ((Manager)currentUser.get()).computeAverageIncomePerCostumer();		
+		}
+		else 
+			 throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
+	}
+	
+	public double computeAverageIncomePerCostumer(Calendar cal1 , Calendar cal2) throws PermissionDeniedException{
+		if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
+			return ((Manager)currentUser.get()).computeAverageIncomePerCostumer(cal1 , cal2);		
+		}
+		else 
+			 throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
+	}
 }

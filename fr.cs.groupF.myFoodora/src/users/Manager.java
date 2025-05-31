@@ -1,5 +1,9 @@
 package users;
+import java.util.ArrayList;
+import java.util.Calendar;
+
 import coreSystem.*;
+import exceptions.*;
 
 public class Manager extends User {
 
@@ -32,30 +36,54 @@ public class Manager extends User {
 //		this.deliveryPolicy = deliveryPolicy;
 //	}
 
-
-	public void addUser(User user) {
-		// TODO - implement Manager.addUser
-		throw new UnsupportedOperationException();
+// Adding Users
+	public void addCustomer(Customer customer) throws UserAlreadyExistsException {
+		if(CoreSystem.getCustomers().get(customer.getUsername()) == null) {
+		CoreSystem.getCustomers().put(customer.getUsername(),customer);
+		System.out.println("Successfully added " + customer.getName() +" as a customer to the system.");	
+		}
+		else throw new UserAlreadyExistsException("Sorry but a customer already exists with username :" + customer.getUsername()+ ".");
 	}
-
+	public void addRestaurant(Restaurant restaurant) throws UserAlreadyExistsException {
+		if(CoreSystem.getRestaurants().get(restaurant.getUsername()) == null) {
+		CoreSystem.getRestaurants().put(restaurant.getUsername(),restaurant);
+		System.out.println("Successfully added " + restaurant.getName() +" as a restaurant to the system.");	
+		}
+		else throw new UserAlreadyExistsException("Sorry but a restaurant already exists with username :" + restaurant.getUsername()+ ".");
+	}
+	public void addCourier(Courier courier) throws UserAlreadyExistsException {
+		if(CoreSystem.getCouriers().get(courier.getUsername()) == null) {
+		CoreSystem.getCouriers().put(courier.getUsername(),courier);
+		System.out.println("Successfully added " + courier.getName() +" as a Courier to the system.");	
+		}
+		else throw new UserAlreadyExistsException("Sorry but a courier already exists with username :" + courier.getUsername()+ ".");
+	}
+	//Removing Users
+	public void removeCustomer(Customer customer) throws NoUserExistsException {
+		if(CoreSystem.getCustomers().get(customer.getUsername()) != null) {
+		CoreSystem.getCustomers().remove(customer.getUsername());
+		System.out.println("Successfully removed " + customer.getName() +" from the list of customers in the system");	
+		}
+		else throw new NoUserExistsException("Sorry but no customer exists with username :" + customer.getUsername()+ ".");
+	}
+	public void removeRestaurant(Restaurant restaurant) throws NoUserExistsException {
+		if(CoreSystem.getRestaurants().get(restaurant.getUsername()) != null) {
+		CoreSystem.getRestaurants().remove(restaurant.getUsername());
+		System.out.println("Successfully removed " + restaurant.getName() +" from the list of restaurants in the system");	
+		}
+		else throw new NoUserExistsException("Sorry but no restaurant exists with username :" + restaurant.getUsername()+ ".");
+	}
 	
-	public void removeUser(User user) {
-		// TODO - implement Manager.removeUser
-		throw new UnsupportedOperationException();
+	public void removeCourier(Courier courier) throws NoUserExistsException {
+		if(CoreSystem.getCouriers().get(courier.getUsername()) != null) {
+		CoreSystem.getCouriers().remove(courier.getUsername());
+		System.out.println("Successfully removed " + courier.getName() +" from the list of couriers in the system");	
+		}
+		else throw new NoUserExistsException("Sorry but no courier exists with username :" + courier.getUsername()+ ".");
 	}
-
 	
-	public void activateUser(User user) {
-		// TODO - implement Manager.activateUser
-		throw new UnsupportedOperationException();
-	}
-
-
-	public void disactivateUser(User use) {
-		// TODO - implement Manager.disactivateUser
-		throw new UnsupportedOperationException();
-	}
-
+	
+	
 
 	public double computeTotalIncome() {
 		double totalIncome = 0;
@@ -63,6 +91,17 @@ public class Manager extends User {
 				totalIncome += order.getFinalPrice();
 			}
 			return totalIncome;
+	}
+	
+	public double computeTotalIncome(Calendar cal1, Calendar cal2) {
+		double totalIncome = 0 ;
+		for(Order order : CoreSystem.getOrders()){
+			Calendar dateOfOrder = order.getOrderDate();
+			if ((dateOfOrder.compareTo(cal1)>=0)&&(dateOfOrder.compareTo(cal2)<=0)){
+				totalIncome += order.getFinalPrice() ;
+			}
+		}
+		return totalIncome;
 	}
 
 	public double computeTotalProfit() {
@@ -72,20 +111,55 @@ public class Manager extends User {
 			}
 			return totalProfit;
 	}
-
-	public void computeAverageIncomePerCostumer() {
+	
+	public double computeTotalProfit(Calendar cal1, Calendar cal2) {
+		double totalProfit = 0 ;
+		for(Order order : CoreSystem.getOrders()){
+			Calendar dateOfOrder = order.getOrderDate();
+			if ((dateOfOrder.compareTo(cal1)>=0)&&(dateOfOrder.compareTo(cal2)<=0)){
+				totalProfit += order.getProfit() ;
+			}
+		}
+		return totalProfit;
+	}
+	public double computeAverageIncomePerCostumer() {
 		double averageIncomePerCostumer = 0;
-			
+		if(CoreSystem.getCustomers().values().size() != 0 ) {
+			averageIncomePerCostumer = computeTotalProfit()/CoreSystem.getCustomers().values().size();
+		}
+		return averageIncomePerCostumer;		
 	}
-
+	
+	public double computeAverageIncomePerCostumer(Calendar cal1, Calendar cal2) {
+		double averageIncomePerCostumer = 0 ;
+		int numberOfOrders = 0 ;
+		for(Order order : CoreSystem.getOrders()){
+			Calendar dateOfOrder = order.getOrderDate();
+			if ((dateOfOrder.compareTo(cal1)>=0)&&(dateOfOrder.compareTo(cal2)<=0)){
+				numberOfOrders+= 1 ;
+			}
+		}
+		if(numberOfOrders != 0) {
+			averageIncomePerCostumer = computeTotalProfit(cal1,cal2)/numberOfOrders;
+		}
+		return averageIncomePerCostumer;
+	}
 	public void showSortedRestaurants() {
-		// TODO - implement Manager.showSortedRestaurants
-		throw new UnsupportedOperationException();
+		RestaurantSorter restSorter = new RestaurantSorter();
+		ArrayList<Restaurant> sortedRestaurants =restSorter.sort(CoreSystem.getRestaurants());
+		System.out.println("Restaurants : ");
+		for(Restaurant restaurant : sortedRestaurants ) {
+			System.out.println(restaurant);
+		}
 	}
 
-	public void showSortedCourier() {
-		// TODO - implement Manager.showSortedCourier
-		throw new UnsupportedOperationException();
+	public void showSortedCouriers() {
+		CourierSorter courSorter = new CourierSorter();
+		ArrayList<Courier> sortedCouriers =courSorter.sort(CoreSystem.getCouriers());
+		System.out.println("Couriers : ");
+		for(Courier courier : sortedCouriers ) {
+			System.out.println(courier);
+		}
 	}
 
 	public void setDeliveryPolicy() {
@@ -97,5 +171,16 @@ public class Manager extends User {
 		// TODO - implement Manager.determinParamToMeetTargetProfit
 		throw new UnsupportedOperationException();
 	}
+	
+	@Override
+	public String toString() {
+	    return "Manager{" +
+	            "id=" + getId() +
+	            ", name='" + getName() + '\'' +
+	            ", username='" + getUsername() + '\'' +
+	            ", surname='" + surname + '\'' +
+	            '}';
+	}
+
 
 }
