@@ -1,4 +1,6 @@
 package menuComponent;
+
+
 /** This is the abstract class representing MenuComponents
  * 
  */
@@ -21,7 +23,8 @@ public abstract class MenuComponent{
 	 * @param isGlutenFree Gluten-free or not
 	 */
 	public MenuComponent(int id, String name, boolean isVegetarian, double price, boolean isGlutenFree) {
-		this.id = id;
+		MenuComponentIdGenerator idgen = MenuComponentIdGenerator.getInstance();
+		this.id = idgen.getNextMenuComponentId();
 		this.name = name;
 		this.price = price;
 		this.isVegetarian = isVegetarian;
@@ -96,8 +99,6 @@ public abstract class MenuComponent{
 	public void setisGlutenFree(boolean isGlutenFree) {
 		this.isGlutenFree = isGlutenFree;
 	}
-	
-	
 	
 	
 	
