@@ -1,19 +1,19 @@
-package menuComponent;
-
+package menuMeals;
+import exceptions.*;
 import java.util.*;
 
 /**
  * This class represents a Meal, composed of multiple dishes.
  */
 
-public abstract class Meal extends MenuComponent{
+public abstract class Meal extends FoodItem{
 	
 	protected boolean mealOfTheWeek;
 	protected ArrayList<Dish> mealComposition;
 	
 	
-	public Meal(int id, String name, boolean isVegetarian, double price, boolean isGlutenFree, boolean mealOfTheWeek, ArrayList<Dish> mealComposition) {
-		super(id, name, isVegetarian, price, isGlutenFree);
+	public Meal( String name, boolean isVegetarian, double price, boolean isGlutenFree, boolean mealOfTheWeek, ArrayList<Dish> mealComposition) {
+		super( name, isVegetarian, price, isGlutenFree);
 		this.mealOfTheWeek = mealOfTheWeek;
 		this.mealComposition = mealComposition;
 	}
@@ -25,7 +25,7 @@ public abstract class Meal extends MenuComponent{
 	 * Checks whether meal is the meal of the week.
 	 */
 	
-	public boolean istmealOfTheWeek() {
+	public boolean ismealOfTheWeek() {
 		return mealOfTheWeek;
 	}
 	/** 

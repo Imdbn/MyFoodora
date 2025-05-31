@@ -1,4 +1,4 @@
-package menuComponent;
+package exceptions;
 
 public class BadMealCompositionCreationException extends Exception {
     

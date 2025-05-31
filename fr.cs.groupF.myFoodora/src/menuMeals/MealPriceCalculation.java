@@ -1,4 +1,4 @@
-package menuComponent;
+package menuMeals;
 
 /**
  * Strategy interface for calculating the price of a meal.

@@ -1,4 +1,4 @@
-package menuComponent;
+package menuMeals;
 
 import java.util.*;
 
@@ -8,35 +8,17 @@ import java.util.*;
  */
 public class Menu {
 
-    private ArrayList<Meal> meals;
     private ArrayList<Dish> dishes;
 
     // Constructor initializes empty lists
     public Menu() {
-        this.meals = new ArrayList<>();
         this.dishes = new ArrayList<>();
-    }
-
-    // Getters
-    public ArrayList<Meal> getMeals() {
-        return meals;
     }
 
     public ArrayList<Dish> getDishes() {
         return dishes;
     }
 
-    // Add a Meal if not already present
-    public void addMeal(Meal meal) {
-        if (!meals.contains(meal)) {
-            meals.add(meal);
-        }
-    }
-
-    // Remove a Meal if present
-    public void removeMeal(Meal meal) {
-        meals.remove(meal);
-    }
 
     // Add a Dish if not already present
     public void addDish(Dish dish) {
@@ -54,16 +36,6 @@ public class Menu {
     @Override
     public String toString() {
         StringBuilder menu = new StringBuilder();
-
-        if (!meals.isEmpty()) {
-        	menu.append("Meals in the menu:\n");
-            for (Meal meal : meals) {
-            	menu.append(meal.getName()).append("\n");
-            }
-        } else {
-        	menu.append("No meals in the menu.\n");
-        }
-
         if (!dishes.isEmpty()) {
         	menu.append("Dishes in the menu:\n");
             for (Dish dish : dishes) {

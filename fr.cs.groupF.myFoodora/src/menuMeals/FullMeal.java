@@ -1,11 +1,12 @@
-package menuComponent;
+package menuMeals;
+import exceptions.*;
 
 import java.util.ArrayList;
 
-public abstract class FullMeal extends Meal {
+public class FullMeal extends Meal {
 
-	public FullMeal(int id, String name, boolean isVegetarian, double price, boolean isGlutenFree, boolean mealOfTheWeek, ArrayList<Dish> mealComposition) {
-	    super(id, name, isVegetarian, price, isGlutenFree, mealOfTheWeek, mealComposition);
+	public FullMeal( String name, boolean isVegetarian, double price, boolean isGlutenFree, boolean mealOfTheWeek, ArrayList<Dish> mealComposition) {
+	    super( name, isVegetarian, price, isGlutenFree, mealOfTheWeek, mealComposition);
         mealComposition = new ArrayList<>();
     }
 

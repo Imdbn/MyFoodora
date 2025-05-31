@@ -1,12 +1,12 @@
-package menuComponent;
+package menuMeals;
 
 
-/** This is the abstract class representing MenuComponents
+/** This is the abstract class representing FoodItems
  * 
  */
 
 
-public abstract class MenuComponent{
+public abstract class FoodItem{
 	protected int id;
 	protected String name;
 	protected boolean isVegetarian;
@@ -22,9 +22,9 @@ public abstract class MenuComponent{
 	 * @param price
 	 * @param isGlutenFree Gluten-free or not
 	 */
-	public MenuComponent(int id, String name, boolean isVegetarian, double price, boolean isGlutenFree) {
-		MenuComponentIdGenerator idgen = MenuComponentIdGenerator.getInstance();
-		this.id = idgen.getNextMenuComponentId();
+	public FoodItem( String name, boolean isVegetarian, double price, boolean isGlutenFree) {
+		FoodItemIdGenerator idgen = FoodItemIdGenerator.getInstance();
+		this.id = idgen.getNextFoodItemId();
 		this.name = name;
 		this.price = price;
 		this.isVegetarian = isVegetarian;
@@ -32,7 +32,7 @@ public abstract class MenuComponent{
 		
 	}
 	/**
-	 * Gets the MenuComponent's id
+	 * Gets the FoodItem's id
 	 */
 	
 	public int getId() {
@@ -40,7 +40,7 @@ public abstract class MenuComponent{
 	}
 	
 	/** 
-	 * Gets the MenuComponent's name
+	 * Gets the FoodItem's name
 	 */
 	
 	public String getName() {
@@ -48,21 +48,21 @@ public abstract class MenuComponent{
 	}
 	
 	/**
-	 * Sets the MenuComponent's name
+	 * Sets the FoodItem's name
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 	
 	/**
-	 * Gets the MenuComponent's price
+	 * Gets the FoodItem's price
 	 */
 	public double getprice() {
 		return price;
 	}
 	
 	/**
-	 * Sets the MenuComponent's price
+	 * Sets the FoodItem's price
 	 */
 	public void setprice(double price) {
 		this.price = price;

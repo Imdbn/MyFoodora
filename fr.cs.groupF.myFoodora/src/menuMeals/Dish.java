@@ -1,4 +1,4 @@
-package menuComponent;
+package menuMeals;
 
 /**
  * This class represents a single dish item in a restaurant's menu.
@@ -6,14 +6,14 @@ package menuComponent;
  * and is classified by a specific category (starter, main dish, or dessert).
  */
 
-public class Dish extends MenuComponent {
+public class Dish extends FoodItem {
 	public enum DishCategory {
 		STARTER, MAINDISH, DESSERT
 	}
 	public DishCategory category; 
 	
-	public Dish(int id, String name, boolean isVegetarian, double price, boolean isGlutenFree, DishCategory category) {
-        super(id, name, isVegetarian, price, isGlutenFree);
+	public Dish( String name, boolean isVegetarian, double price, boolean isGlutenFree, DishCategory category) {
+        super( name, isVegetarian, price, isGlutenFree);
         this.category = category;
     }
 	
