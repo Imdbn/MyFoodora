@@ -258,6 +258,7 @@ public class CoreSystem {
 		else 
 			 throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
 	}
+	// Compute Average Income Per Customer
 	
 	public double computeAverageIncomePerCostumer() throws PermissionDeniedException{
 		if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
@@ -273,5 +274,28 @@ public class CoreSystem {
 		}
 		else 
 			 throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
+	}
+	
+	
+	//Shows the Sorted Couriers with regards to delivery counter
+	
+	
+	public void showSortedCouriers() throws PermissionDeniedException{
+		if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
+			((Manager)currentUser.get()).showSortedCouriers();
+		}
+		else 
+			throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
+	}
+	
+	//Shows the Sorted Restaurants with regards to order counter
+
+	
+	public void showSortedRestaurants() throws PermissionDeniedException{
+		if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
+			((Manager)currentUser.get()).showSortedRestaurants();
+		}
+		else 
+			throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
 	}
 }
