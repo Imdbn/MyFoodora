@@ -6,6 +6,7 @@ import coreSystem.*;
 public class Order {
 	// ========================================================================================================================================================================================
 	// Fields
+	//=========================================================================================================================================================================================
 	private int id;
 	private CoreSystem coreSystem;
 	private Calendar orderDate = Calendar.getInstance();
@@ -21,6 +22,7 @@ public class Order {
 	
 	// ========================================================================================================================================================================================
 	// Constructors 
+	//=========================================================================================================================================================================================
 	public Order(Customer customer , Restaurant restaurant) {
 		OrderIdGenerator idgen = OrderIdGenerator.getInstance();
 		this.id = idgen.getNextOrderId();
@@ -32,6 +34,7 @@ public class Order {
 		
 	// ========================================================================================================================================================================================
 	// Getters and Setters
+	//=========================================================================================================================================================================================
 	public int getId() {
 		return id;
 	}
@@ -47,22 +50,6 @@ public class Order {
 	public void setOrderDate(Calendar orderDate) {
 		this.orderDate = orderDate;
 	}
-
-//	public HashMap<Meal, Integer> getOrderedMeals() {
-//		return orderedMeals;
-//	}
-//
-//	public void setOrderedMeals(HashMap<Meal, Integer> orderedMeals) {
-//		this.orderedMeals = orderedMeals;
-//	}
-//
-//	public HashMap<Dish, Integer> getOrderedDishes() {
-//		return orderedDishes;
-//	}
-//
-//	public void setOrderedDishes(HashMap<Dish, Integer> orderedDishes) {
-//		this.orderedDishes = orderedDishes;
-//	}
 
 	public double getPrice() {
 		return price;
@@ -117,6 +104,7 @@ public class Order {
 	
 	// ========================================================================================================================================================================================
 	// Methods
+	//=========================================================================================================================================================================================
 	
 	
 	

@@ -1,100 +1,167 @@
 package users;
 
-public class Courier extends User{
-	private String surname;
-	private Coordinate position;
-	private String phone;
-	private int deliveryCounter;
-	private boolean onDuty;
-	
-	public Courier(String name,String username, String password,String surname , Coordinate position,String phone) {
-		super(name,username,password);
-		this.position = position;
-		this.deliveryCounter = 0;
-		this.phone = phone;
-		
-	}
-	public Courier(String name,String username, String password,String surname,String phone ) {
-		super(name,username,password);
-		this.deliveryCounter = 0;
-		this.phone = phone;
-		this.position = new Coordinate();
-	}
+/**
+ * The Courier class represents a delivery person in the system.
+ * Each courier has a name, username, password, surname, position (coordinates),
+ * phone number, delivery count, and an on-duty status.
+ */
+public class Courier extends User {
 
-	public String getSurname() {
-		return surname;
-	}
+    // =============================================================
+    // Fields
+    // =============================================================
 
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
+    private String surname;
+    private Coordinate position;
+    private String phone;
+    private int deliveryCounter;
+    private boolean onDuty;
 
-	public Coordinate getPosition() {
-		return position;
-	}
-	/**
-	 * allows the Courier to change his position
-	 * @param position : coordinate 
-	 */
-	public void setPosition(Coordinate position) {
-		this.position = position;
-	}
+    // =============================================================
+    // Constructors
+    // =============================================================
 
-	public String getPhone() {
-		return phone;
-	}
+    /**
+     * Constructs a Courier with full initialization including position.
+     *
+     * @param name      the name of the courier
+     * @param username  the username of the courier
+     * @param password  the password for login
+     * @param surname   the surname of the courier
+     * @param position  the current coordinate position
+     * @param phone     the contact phone number
+     */
+    public Courier(String name, String username, String password, String surname, Coordinate position, String phone) {
+        super(name, username, password);
+        this.surname = surname;
+        this.position = position;
+        this.deliveryCounter = 0;
+        this.phone = phone;
+        this.onDuty = true;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    /**
+     * Constructs a Courier without a predefined position.
+     * A default Coordinate is used instead.
+     *
+     * @param name      the name of the courier
+     * @param username  the username of the courier
+     * @param password  the password for login
+     * @param surname   the surname of the courier
+     * @param phone     the contact phone number
+     */
+    public Courier(String name, String username, String password, String surname, String phone) {
+        super(name, username, password);
+        this.surname = surname;
+        this.deliveryCounter = 0;
+        this.phone = phone;
+        this.position = new Coordinate();
+        this.onDuty = true;
+    }
 
-	public int getDeliveryCounter() {
-		return deliveryCounter;
-	}
+    // =============================================================
+    // Getters and Setters
+    // =============================================================
 
-	public void setDeliveryCounter(int deliveryCounter) {
-		this.deliveryCounter = deliveryCounter;
-	}
+    /**
+     * @return the surname of the courier
+     */
+    public String getSurname() {
+        return surname;
+    }
 
-	public boolean isOnDuty() {
-		return onDuty;
-	}
-	/**
-	 * allows the Courier to set his On-duty status to True(on-duty) or to False (off-duty)
-	 * @param onDuty :  boolean [ True(on-Duty) or False(off-duty) ]
-	 */
-	public void setOnDuty(boolean onDuty) {
-		this.onDuty = onDuty;
-	}
-	/**
-	 * acceptDelivery method that allows the Courier to accept a Delivery
-	 */
-	public void acceptDelivery() {
-	
-	}
-	/**
-	 * refuseDelivery method that allows the Courier to refuse a Delivery
-	 */
-	public void refuseDelivery() {
-		
-	}
-	@Override
-	public String toString() {
-	    return "Courier{" +
-	            "id=" + getId() +
-	            ", name='" + getName() + '\'' +
-	            ", username='" + getUsername() + '\'' +
-	            ", surname='" + surname + '\'' +
-	            ", position=" + position +
-	            ", phone='" + phone + '\'' +
-	            ", deliveries=" + deliveryCounter +
-	            ", onDuty=" + onDuty +
-	            '}';
-	}
+    /**
+     * @param surname the surname to set
+     */
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
 
-	
-	
-	
-	
+    /**
+     * @return the current position of the courier
+     */
+    public Coordinate getPosition() {
+        return position;
+    }
 
+    /**
+     * Updates the courier's position.
+     *
+     * @param position the new coordinate
+     */
+    public void setPosition(Coordinate position) {
+        this.position = position;
+    }
+
+    /**
+     * @return the courier's phone number
+     */
+    public String getPhone() {
+        return phone;
+    }
+
+    /**
+     * @param phone the phone number to set
+     */
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    /**
+     * @return the number of deliveries completed by the courier
+     */
+    public int getDeliveryCounter() {
+        return deliveryCounter;
+    }
+
+    /**
+     * @param deliveryCounter the number of deliveries to set
+     */
+    public void setDeliveryCounter(int deliveryCounter) {
+        this.deliveryCounter = deliveryCounter;
+    }
+
+    /**
+     * @return true if the courier is currently on duty, false otherwise
+     */
+    public boolean isOnDuty() {
+        return onDuty;
+    }
+
+    /**
+     * Sets the on-duty status of the courier.
+     *
+     * @param onDuty true if the courier is on duty, false otherwise
+     */
+    public void setOnDuty(boolean onDuty) {
+        this.onDuty = onDuty;
+    }
+
+    // =============================================================
+    // Utility Methods
+    // =============================================================
+
+    /**
+     * Increments the delivery counter by 1.
+     */
+    public void incrementDeliveryCounter() {
+        this.deliveryCounter++;
+    }
+
+    /**
+     * @return a string representation of the courier's state
+     */
+    @Override
+    public String toString() {
+        return "Courier{" +
+                "id=" + getId() +
+                ", name='" + getName() + '\'' +
+                ", username='" + getUsername() + '\'' +
+                ", surname='" + surname + '\'' +
+                ", position=" + position +
+                ", phone='" + phone + '\'' +
+                ", deliveries=" + deliveryCounter +
+                ", onDuty=" + onDuty +
+                '}';
+    }
 }

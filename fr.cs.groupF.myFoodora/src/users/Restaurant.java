@@ -27,7 +27,6 @@ public class Restaurant extends User{
 		return genericDiscount;
 	}
 	
-	
 
 	public double getSpecialDiscount() {
 		return specialDiscount;

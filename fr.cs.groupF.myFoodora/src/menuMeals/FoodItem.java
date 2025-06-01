@@ -22,7 +22,7 @@ public abstract class FoodItem{
 	 * @param price
 	 * @param isGlutenFree Gluten-free or not
 	 */
-	public FoodItem( String name, boolean isVegetarian, double price, boolean isGlutenFree) {
+	public FoodItem(String name, boolean isVegetarian, double price, boolean isGlutenFree) {
 		FoodItemIdGenerator idgen = FoodItemIdGenerator.getInstance();
 		this.id = idgen.getNextFoodItemId();
 		this.name = name;
