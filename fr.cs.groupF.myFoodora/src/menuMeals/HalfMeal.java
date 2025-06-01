@@ -1,77 +1,45 @@
 package menuMeals;
-import exceptions.*;
 
+import exceptions.*;
 import java.util.ArrayList;
 
+/**
+ * This class represents a HalfMeal, which must be composed of exactly
+ * 2 dishes: either (Starter + MainDish) or (MainDish + Dessert).
+ */
 public class HalfMeal extends Meal {
 
-    public HalfMeal( String name, boolean isVegetarian, double price, boolean isGlutenFree, boolean mealOfTheWeek, ArrayList<Dish> mealComposition) {
-        super( name, isVegetarian, price, isGlutenFree, mealOfTheWeek, mealComposition);
-        mealComposition = new ArrayList<>();
+    public HalfMeal(String mealName, boolean isVegetarian, boolean isGlutenFree, boolean mealOfTheWeek) {
+        super(mealName, isVegetarian, isGlutenFree, mealOfTheWeek);
+        this.mealComposition = new ArrayList<>();
+    }
+
+    public HalfMeal(String mealName, boolean isVegetarian, boolean isGlutenFree) {
+        super(mealName, isVegetarian, isGlutenFree);
+        this.mealComposition = new ArrayList<>();
+    }
+
+    public HalfMeal(String mealName) {
+        super(mealName);
+        this.mealComposition = new ArrayList<>();
     }
 
     @Override
-    public void addDish(Dish dish) throws BadMealCompositionCreationException {
-        if (mealComposition.size() >= 2) {
-            throw new BadMealCompositionCreationException("HalfMeal can only have two dishes.");
-        }
-
-        // Check if adding the dish respects the half meal rules:
-        boolean hasStarter = false;
-        boolean hasMainDish = false;
-        boolean hasDessert = false;
-
-        for (Dish d : mealComposition) {
-            if (d.category == Dish.DishCategory.STARTER) hasStarter = true;
-            else if (d.category == Dish.DishCategory.MAINDISH) hasMainDish = true;
-            else if (d.category == Dish.DishCategory.DESSERT) hasDessert = true;
-        }
-
-        switch (dish.category) {
-            case STARTER:
-                if (hasStarter)
-                    throw new BadMealCompositionCreationException("HalfMeal can only have one starter.");
-                if (hasDessert)
-                    throw new BadMealCompositionCreationException("HalfMeal cannot have starter and dessert together.");
-                break;
-            case MAINDISH:
-                if (hasMainDish)
-                    throw new BadMealCompositionCreationException("HalfMeal can only have one main dish.");
-                break;
-            case DESSERT:
-                if (hasDessert)
-                    throw new BadMealCompositionCreationException("HalfMeal can only have one dessert.");
-                if (hasStarter)
-                    throw new BadMealCompositionCreationException("HalfMeal cannot have starter and dessert together.");
-                break;
-        }
-
-        // Check if dish matches meal type (vegetarian/glutenFree)
-        if (this.isVegetarian && !dish.isVegetarian)
-            throw new BadMealCompositionCreationException("Dish is not vegetarian as required by HalfMeal.");
-        if (this.isGlutenFree && !dish.isGlutenFree)
-            throw new BadMealCompositionCreationException("Dish is not gluten free as required by HalfMeal.");
-
+    public void addDishToMeal(Dish dish) throws BadMealCompositionCreationException {
+        this.itemVisitor.visit(dish, this);
         mealComposition.add(dish);
     }
 
-    /**
-     * Check if the half meal is complete (2 dishes and valid combination)
-     */
-    public boolean isComplete() {
-        if (mealComposition.size() != 2) return false;
-
-        boolean hasStarter = false;
-        boolean hasMainDish = false;
-        boolean hasDessert = false;
-
-        for (Dish d : mealComposition) {
-            if (d.category == Dish.DishCategory.STARTER) hasStarter = true;
-            else if (d.category == Dish.DishCategory.MAINDISH) hasMainDish = true;
-            else if (d.category == Dish.DishCategory.DESSERT) hasDessert = true;
-        }
-
-        // Valid combinations for half meal:
-        return (hasStarter && hasMainDish) || (hasMainDish && hasDessert);
-    }
+    @Override
+	public String toString() {
+		String s = "The meal '" + this.name + "' composed of : ";
+		for (int i=0;i<this.mealComposition.size()-1;i++) {
+			s += this.mealComposition.get(i).getName() +", ";
+		}
+		if (!this.mealComposition.isEmpty())
+			s+=this.mealComposition.get(this.mealComposition.size()-1).getName()+".";
+		return s ;
+		}
 }
+
+

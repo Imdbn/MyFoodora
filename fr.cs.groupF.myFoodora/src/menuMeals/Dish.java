@@ -10,7 +10,12 @@ public class Dish extends FoodItem {
 	public enum DishCategory {
 		STARTER, MAINDISH, DESSERT
 	}
-	public DishCategory category; 
+	private DishCategory category; 
+	
+	// Default constructor
+    public Dish() {
+        super();
+    }
 	
 	public Dish( String name, boolean isVegetarian, double price, boolean isGlutenFree, DishCategory category) {
         super( name, isVegetarian, price, isGlutenFree);
@@ -31,21 +36,19 @@ public class Dish extends FoodItem {
 	     *
 	     * @param category dish category to set
 	     */
-	    public void setCategory(DishCategory category) {
-	        this.category = category;
+	 public void setCategory(DishCategory category) {
+	     this.category = category;
 	    }
-	    @Override
-	    public String toString(){
-	    	return "Dish{\n" +
-	    		       "id=" + id + ",\n" +
-	    		       "name='" + name + '\'' + ",\n" +
-	    		       "category=" + category + ",\n" +
-	    		       "vegetarian=" + isVegetarian + ",\n" +
-	    		       "glutenFree=" + isGlutenFree + ",\n" +
-	    		       "price=" + price + ",\n" +
-	    		       '}';
-
-	              
+	 @Override
+	    public String toString() {
+	        return "Dish {\n" +
+	               "  id=" + getId() + ",\n" +
+	               "  name='" + getName() + "',\n" +
+	               "  category=" + category + ",\n" +
+	               "  vegetarian=" + isVegetarian() + ",\n" +
+	               "  glutenFree=" + isGlutenFree() + ",\n" +
+	               "  price=" + price + "\n" +
+	               '}';
 	    }
 	
 }

@@ -8,17 +8,43 @@ import java.util.*;
 
 public abstract class Meal extends FoodItem{
 	
+	
+	/*
+	 * Whether it is meal of the week or Not
+	 */
+	
 	protected boolean mealOfTheWeek;
+	
+	/*
+	 * List of dishes which compose the Meal
+	 */
+	
 	protected ArrayList<Dish> mealComposition;
 	
 	
-	public Meal( String name, boolean isVegetarian, double price, boolean isGlutenFree, boolean mealOfTheWeek, ArrayList<Dish> mealComposition) {
-		super( name, isVegetarian, price, isGlutenFree);
-		this.mealOfTheWeek = mealOfTheWeek;
-		this.mealComposition = mealComposition;
+	public Meal (String name) {
+		super();
+		this.name=name;
 	}
 	
-	public abstract void addDish(Dish dish) throws BadMealCompositionCreationException;
+	public Meal (String name, boolean isVegetarian, boolean isGlutenFree, boolean mealOfTheWeek){
+		super(name,isVegetarian,isGlutenFree);
+		this.mealOfTheWeek=mealOfTheWeek;		
+		}
+	
+	public Meal (String name, boolean isVegetarian, boolean isGlutenFree){
+		super(name,isVegetarian,isGlutenFree);
+		}
+	
+	
+	/*
+	 * Declaring and instantiating the addDishVisitor
+	 */
+	
+	protected AddDishVisitor itemVisitor = new AddDishVisitorImpl();
+	
+	
+	public abstract void addDishToMeal(Dish dish) throws BadMealCompositionCreationException;
 
 
 	/** 

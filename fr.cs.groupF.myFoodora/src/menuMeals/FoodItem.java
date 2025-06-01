@@ -1,7 +1,7 @@
 package menuMeals;
 
 
-/** This is the abstract class representing FoodItems
+/** This is the abstract class representing FoodItem
  * 
  */
 
@@ -13,15 +13,18 @@ public abstract class FoodItem{
 	protected double price;
 	protected boolean isGlutenFree;
 	
+	
+	
 
 	/** 
-	 * Constructor to initialize common properties
+	 * Constructors to initialize common properties
 	 * @param id Unique identifier
 	 * @param name Name of the component
 	 * @param isVegetarian Vegetarian or not
 	 * @param price
 	 * @param isGlutenFree Gluten-free or not
 	 */
+	
 	public FoodItem( String name, boolean isVegetarian, double price, boolean isGlutenFree) {
 		FoodItemIdGenerator idgen = FoodItemIdGenerator.getInstance();
 		this.id = idgen.getNextFoodItemId();
@@ -31,6 +34,23 @@ public abstract class FoodItem{
 		this.isGlutenFree = isGlutenFree;
 		
 	}
+	
+	
+	public FoodItem( String name, boolean isVegetarian, boolean isGlutenFree) {
+		FoodItemIdGenerator idgen = FoodItemIdGenerator.getInstance();
+		this.id = idgen.getNextFoodItemId();
+		this.name = name;
+		this.isVegetarian = isVegetarian;
+		this.isGlutenFree = isGlutenFree;
+		
+	}
+	
+	public FoodItem() {
+		FoodItemIdGenerator idgen = FoodItemIdGenerator.getInstance();
+		this.id = idgen.getNextFoodItemId();
+	  
+	}
+
 	/**
 	 * Gets the FoodItem's id
 	 */
