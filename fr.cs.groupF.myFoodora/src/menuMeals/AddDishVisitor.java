@@ -1,9 +1,11 @@
 package menuMeals;
-import exceptions.*;
+
+//import menuMeals.*;
+import exceptions.BadMealCompositionCreationException;
 
 public interface AddDishVisitor {
-    void visit(FullMeal fullMeal, Dish dish) throws BadMealCompositionCreationException;
-    void visit(HalfMeal halfMeal, Dish dish) throws BadMealCompositionCreationException;
+    void visit(Dish dish, FullMeal meal) throws BadMealCompositionCreationException;
+    void visit(Dish dish, HalfMeal meal) throws BadMealCompositionCreationException;
 }
 
 

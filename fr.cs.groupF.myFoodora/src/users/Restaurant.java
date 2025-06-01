@@ -70,10 +70,6 @@ public class Restaurant extends User{
 	}
 
 	
-//	public void addDish(Dish dish) {
-//		
-//		
-//	}
 	public void removeDish() {
 		
 	}

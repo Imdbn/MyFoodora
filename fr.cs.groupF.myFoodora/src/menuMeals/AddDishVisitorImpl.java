@@ -1,16 +1,62 @@
 package menuMeals;
+
 import exceptions.*;
 
 public class AddDishVisitorImpl implements AddDishVisitor {
 
     @Override
-    public void visit(FullMeal fullMeal, Dish dish) throws BadMealCompositionCreationException {
-        fullMeal.addDish(dish);  // validation inside FullMeal
+    public void visit(Dish dish, HalfMeal halfMeal) throws BadMealCompositionCreationException {
+        if (halfMeal.getmealComposition().size() == 2) {
+            throw new BadMealCompositionCreationException("Attempt to add third item to a half-meal.");
+        }
+
+        if (halfMeal.getmealComposition().size() == 1) {
+            Dish existingDish = halfMeal.getmealComposition().get(0);
+
+
+            if (dish.getCategory().equals(existingDish.getCategory())) {
+                throw new BadMealCompositionCreationException("Attempt to create half-meal with duplicate categories.");
+            }
+
+            if (!dish.getCategory().equals(Dish.DishCategory.MAINDISH) &&
+                !existingDish.getCategory().equals(Dish.DishCategory.MAINDISH)) {
+                throw new BadMealCompositionCreationException("Attempt to create a half-meal with no main dish.");
+            }
+        }
+
+        if (halfMeal.isVegetarian() && !dish.isVegetarian()) {
+            throw new BadMealCompositionCreationException("Attempt to add non-vegetarian item to a vegetarian meal.");
+        }
+
+        if (halfMeal.isGlutenFree() && !dish.isGlutenFree()) {
+            throw new BadMealCompositionCreationException("Attempt to add gluten-containing item to a gluten-free meal.");
+        }
+
+        
+        halfMeal.getmealComposition().add(dish);
     }
 
     @Override
-    public void visit(HalfMeal halfMeal, Dish dish) throws BadMealCompositionCreationException {
-        halfMeal.addDish(dish);  // validation inside HalfMeal
+    public void visit(Dish dish, FullMeal fullMeal) throws BadMealCompositionCreationException {
+        if (fullMeal.getmealComposition().size() == 3) {
+            throw new BadMealCompositionCreationException("Attempt to add fourth item to a full-meal.");
+        }
+
+        for (Dish existingDish : fullMeal.getmealComposition()) {
+            if (dish.getCategory().equals(existingDish.getCategory())) {
+                throw new BadMealCompositionCreationException("Attempt to create full-meal with duplicate categories.");
+            }
+        }
+
+        if (fullMeal.isVegetarian() && !dish.isVegetarian()) {
+            throw new BadMealCompositionCreationException("Attempt to add non-vegetarian item to a vegetarian meal.");
+        }
+
+        if (fullMeal.isGlutenFree() && !dish.isGlutenFree()) {
+            throw new BadMealCompositionCreationException("Attempt to add gluten-containing item to a gluten-free meal.");
+        }
+
+        fullMeal.getmealComposition().add(dish);
     }
 }
 
