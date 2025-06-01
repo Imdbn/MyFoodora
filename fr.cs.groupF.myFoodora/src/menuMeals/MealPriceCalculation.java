@@ -10,5 +10,5 @@ public interface MealPriceCalculation {
      * @param meal the meal for which the price is to be calculated
      * @return the calculated price
      */
-    double calculatePrice(Meal meal);
+    public double calculatePrice(Meal meal, double discount);
 }
