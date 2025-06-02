@@ -3,6 +3,7 @@ import java.util.*;
 
 import exceptions.*;
 import menuMeals.*;
+import menuMeals.Dish.DishCategory;
 import notificationService.NotificationService;
 import notificationService.Offer;
 
@@ -137,10 +138,12 @@ public class Restaurant extends User{
 	public void addMeal(String mealName, MealType mealType) throws UndefinedTypeException, ItemAlreadyExistsException {
 		if(!meals.containsKey(mealName)) {
 		Meal meal = FoodFactory.createMeal(mealName, mealType);
-		this.meals.put(mealName,meal);  //what if it already exists? override equals method
+		this.meals.put(mealName,meal); 
 		}
 		else throw new ItemAlreadyExistsException("Sorry but the meal you are trying to add already exists");
 	}
+	
+	
 	
 	public void addMeal(String mealName, MealType mealType, boolean isVegetarian, boolean isGlutenFree) throws ItemAlreadyExistsException, UndefinedTypeException {
 		if(!meals.containsKey(mealName)) {
@@ -174,22 +177,7 @@ public class Restaurant extends User{
 		NotificationService.getInstance().setOffer(null,this,Offer.SPECIALDISCOUNT);
 	}
 	
-	public void setMealOfTheWeek(Meal meal) throws ItemNotFoundException {
-		if(!meals.containsValue(meal)) {
-		meal.setMealOfTheWeek(true);
-		NotificationService.getInstance().setOffer(meal,this,Offer.MEALOFTHEWEEK);
-		}
-		else throw new ItemNotFoundException("Sorry but the meal you are trying to set as Meal of the Week doesn't exist");
-	}
-	
-	public void setMealOfTheWeek(String mealName) throws ItemNotFoundException {
-		if(meals.containsKey(mealName)) {
-			Meal meal =meals.get(mealName);
-			NotificationService.getInstance().setOffer(meal,this,Offer.MEALOFTHEWEEK);
 
-		}
-		else throw new ItemNotFoundException("Sorry but the meal you are trying to remove doesn't exist");
-	}
 	//Show meal
 	
 	
@@ -210,6 +198,10 @@ public class Restaurant extends User{
 	}
 	public void addDish(String itemName) throws ItemAlreadyExistsException {
 		this.menu.addDish(itemName);
+	}
+	public void addDish(String itemName,boolean isVegetarian,boolean isGlutenFree, double price ,DishCategory category ) throws ItemAlreadyExistsException {
+		Dish dish = FoodFactory.createDish(itemName, isVegetarian, price, isGlutenFree , category);
+		this.menu.addDish(dish);
 	}
 	
 	public void removeDish(Dish item) throws ItemNotFoundException {

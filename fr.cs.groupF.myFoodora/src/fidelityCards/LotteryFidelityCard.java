@@ -8,7 +8,7 @@ import users.Order;
 
 public class LotteryFidelityCard extends FidelityCard {
 	
-	private static double probability=0.5;
+	private static double probability=0.05;
 	
 	private Calendar lastTimeUsed = null; // never used before
 	

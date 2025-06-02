@@ -248,7 +248,7 @@ public class Customer extends User implements Observer {
 		System.out.println(this.fidelityCard);
 	}
 	
-	public void accessOrders() {
+	public void displayOrders() {
 		   
 	    System.out.println("Completed Orders (" + this.orderHistory.size()+")");
 

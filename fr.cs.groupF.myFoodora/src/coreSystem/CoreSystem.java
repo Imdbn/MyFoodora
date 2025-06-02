@@ -7,6 +7,8 @@ import users.*;
 import exceptions.*;
 import targetProfitPolicy.*;
 import fidelityCards.*;
+import menuMeals.*;
+import menuMeals.Dish.DishCategory;
 
 public class CoreSystem {
 	//===========================================================================================================================================================================================================
@@ -429,6 +431,51 @@ public class CoreSystem {
     	else
     		throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
     }
+    
+    public void showSortedHalfMeals(String restaurantName) throws  PermissionDeniedException{
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER)  {
+    		restaurants.get(restaurantName).showSortedHalfMeals();
+    	}
+    	else
+    		throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
+    }
+    
+    public void showSortedHalfMeals(Restaurant restaurant) throws  PermissionDeniedException{
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER)  {
+    		restaurant.showSortedHalfMeals();
+    	}
+    	else
+    		throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
+    }
+    public void showSortedFullMeals(String restaurantName) throws  PermissionDeniedException{
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER)  {
+    		restaurants.get(restaurantName).showSortedFullMeals();
+    	}
+    	else
+    		throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
+    }
+    public void showSortedFullMeals(Restaurant restaurant) throws  PermissionDeniedException{
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER)  {
+    		restaurant.showSortedFullMeals();
+    	}
+    	else
+    		throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
+    }
+    
+    public void showSortedDishes(String restaurantName) throws  PermissionDeniedException{
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER)  {
+    		restaurants.get(restaurantName).showSortedDishes();
+    	}
+    	else
+    		throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Maneger have Permission to use it");
+    }
+    public void showSortedDishes(Restaurant restaurant) throws  PermissionDeniedException{
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER)  {
+    		restaurant.showSortedDishes();
+    	}
+    	else
+    		throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
+    }
 
 	//===========================================================================================================================================================================================================
     //\\Customer Methods
@@ -472,29 +519,233 @@ public class CoreSystem {
     	else throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Customer have Permission to use it");
     }
     
-    public void endOrder(Order order)
+    public void endOrder(Order order) throws NoCourierIsAvailableException, ItemNotFoundException, PermissionDeniedException {
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.CUSTOMER) {
+    		if(customerOrders.contains(order)) {
+    			((Customer)currentUser.get()).endOrder(order);;
+    		}
+    		else throw new ItemNotFoundException("Sorry there is no such Order for the current logged in customer.");
+    		
+    	}
+    	else throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Customer have Permission to use it");
+    }
 
-
+    public void displayHistoryOrders() throws PermissionDeniedException {
+ 		if (currentUserType.orElse(UserType.GUEST) == UserType.CUSTOMER) {
+ 			((Customer)currentUser.get()).displayOrders();
+ 		}
+ 		else
+ 		    throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Customer have Permission to use it");
+     }
 
 	
     
+    public void registerFidelityCard(FidelityCardType cardType) throws PermissionDeniedException, UndefinedFidelityCardException {
+		if (currentUserType.orElse(UserType.GUEST) == UserType.CUSTOMER) {
+			((Customer)currentUser.get()).registerFidelityCard(cardType);
+		}
+		else
+		    throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Customer have Permission to use it");
+    }
+    
+    public void unregisterFidelityCard() throws PermissionDeniedException, UndefinedFidelityCardException {
+		if (currentUserType.orElse(UserType.GUEST) == UserType.CUSTOMER) {
+			((Customer)currentUser.get()).unregisterFidelityCard();
+		}
+		else
+		    throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Customer have Permission to use it");
+    }
+    
+    public void displayFidelityCardInfo() throws PermissionDeniedException {
+		if (currentUserType.orElse(UserType.GUEST) == UserType.CUSTOMER) {
+			((Customer)currentUser.get()).displayFidelityCard();;
+		}
+		else
+		    throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Customer have Permission to use it");
+    }
     
     
     
     
+	//===========================================================================================================================================================================================================
+	//\\ Restaurant Methods
+	//===========================================================================================================================================================================================================
+    
+    
+    public void showMenuAndMeals() throws PermissionDeniedException {
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.RESTAURANT) {
+	    	((Restaurant)currentUser.get()).displayRestaurant();
+    	}
+    	else
+    		throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Restaurant have Permission to use it");
+    	
+    }
+    
+    
+    public void setSpecialDiscount(String discount) throws PermissionDeniedException, IllegalArgumentException{
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.RESTAURANT){
+            double discountFactor;
+            try {
+                discountFactor = Double.parseDouble(discount);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Invalid discount format. Please enter a double value.");
+            }
+            
+
+            if (discountFactor <= 0 || discountFactor >= 1) {
+                throw new IllegalArgumentException("The discount factor must be greater than 0 and less than 1.");
+            }	
+	    	((Restaurant)currentUser.get()).setSpecialDiscount(discountFactor);
+    	}
+    	else
+    		throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Restaurant have Permission to use it");
+    	
+    }
+    
+    public void setGenericDiscount(String discount) throws PermissionDeniedException, IllegalArgumentException{
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.RESTAURANT) {
+    		
+            double discountFactor;
+            try {
+                discountFactor = Double.parseDouble(discount);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Invalid discount format. Please enter a double value.");
+            }
+            
+
+            if (discountFactor <= 0 || discountFactor >= 1) {
+                throw new IllegalArgumentException("The discount factor must be greater than 0 and less than 1.");
+            }	
+	    	((Restaurant)currentUser.get()).setGenericDiscount(discountFactor);
+    	}
+    	else
+    		throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Restaurant have Permission to use it");
+    	
+    }
+    
+    public void addDishRestaurantMenu(String dishName,DishCategory category,boolean isVegetarian,boolean isGlutenFree, double price) throws PermissionDeniedException, ItemAlreadyExistsException {
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.RESTAURANT)  {
+	    	((Restaurant)currentUser.get()).addDish(dishName, isVegetarian, isGlutenFree, price, category);
+    	}
+    	else
+    		throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Restaurant have Permission to use it");
+    	
+    	
+    }
+    public void addDishRestaurantMenu(String dishName) throws PermissionDeniedException, ItemAlreadyExistsException {
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.RESTAURANT)  {
+	    	((Restaurant)currentUser.get()).addDish(dishName);
+    	}
+    	else
+    		throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Restaurant have Permission to use it");
+    	
+    	
+    }
+    public void addDishRestaurantMenu(Dish dish) throws PermissionDeniedException, ItemAlreadyExistsException {
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.RESTAURANT)  {
+	    	((Restaurant)currentUser.get()).addDish(dish);
+    	}
+    	else
+    		throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Restaurant have Permission to use it");
+    	
+    	
+    }
+    
+
+
+    
+    public void createMeal (String mealName, MealType mealType) throws PermissionDeniedException, UndefinedTypeException, ItemAlreadyExistsException {
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.RESTAURANT)  {
+    		 ((Restaurant)currentUser.get()).addMeal(mealName, mealType);
+    	}
+    	else {
+    		throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Restaurant have Permission to use it");
+    	}
+    }
+    
+    public void createMeal (String mealName, MealType mealType,boolean isVegetarian, boolean isGlutenFree) throws PermissionDeniedException, ItemAlreadyExistsException, UndefinedTypeException {
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.RESTAURANT)  {
+    		((Restaurant)currentUser.get()).addMeal(mealName, mealType, isVegetarian, isGlutenFree);
+    	}
+    	else {
+    		throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Restaurant have Permission to use it");
+    	}
+    }
+    
+    
+    public void addDish2Meal( String mealName , String dishName) throws  PermissionDeniedException, BadMealCompositionCreationException, ItemNotFoundException {
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.RESTAURANT)  {
+				((Restaurant)currentUser.get()).addDishToMeal(mealName, dishName);	
+    		}
+    	else
+    		throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Restaurant have Permission to use it");
+    }
+    
+    public void showMeal(String mealName) throws  PermissionDeniedException, ItemNotFoundException{
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.RESTAURANT)  {
+    		((Restaurant)currentUser.get()).showMeal(mealName);
+    	}
+    	else
+    		throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Restaurant have Permission to use it");
+    }
+    
+    
+
+    	
+    public void setSpecialOffer(String mealName) throws  PermissionDeniedException, ItemNotFoundException{
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.RESTAURANT)  {
+    		((Restaurant)currentUser.get()).setSpecialOffer(mealName);
+    	}
+    	else
+    		throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Restaurant have Permission to use it");
+    }
+    
+    
+    public void removeFromSpecialOffer(String mealName) throws  PermissionDeniedException, ItemNotFoundException{
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.RESTAURANT)  {
+    		((Restaurant)currentUser.get()).setSpecialOffer(mealName);
+    	}
+    	else
+    		throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Restaurant have Permission to use it");
+    }
+    
+    public void showSortedHalfMeals() throws  PermissionDeniedException{
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.RESTAURANT)  {
+    		((Restaurant)currentUser.get()).showSortedHalfMeals();
+    	}
+    	else
+    		throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Restaurant have Permission to use it");
+    }
+    public void showSortedFullMeals() throws  PermissionDeniedException{
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.RESTAURANT)  {
+    		((Restaurant)currentUser.get()).showSortedFullMeals();
+    	}
+    	else
+    		throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Restaurant have Permission to use it");
+    }
+    
+    public void showSortedDishes() throws  PermissionDeniedException{
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.RESTAURANT)  {
+    		((Restaurant)currentUser.get()).showSortedDishes();
+    	}
+    	else
+    		throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Restaurant have Permission to use it");
+    }
     
     
     
+    //===========================================================================================================================================================================================================
+  	//\\ Courier Methods
+  	//===========================================================================================================================================================================================================
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    public void setOnDuty(String username, boolean isOnDuty) throws PermissionDeniedException {
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.COURIER) {
+    		Courier courier = (Courier) currentUser.get();
+    		courier.setOnDuty(isOnDuty);
+    	}
+    	else {
+    		throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Courier have Permission to use it");
+    	}   	
+    }
     
  	}
