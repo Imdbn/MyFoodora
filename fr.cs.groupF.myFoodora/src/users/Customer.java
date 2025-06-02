@@ -1,4 +1,5 @@
 package users;
+import java.text.SimpleDateFormat;
 import java.util.*;
 /** 
  * This is the Customer Class inheriting from its parent class User
@@ -106,6 +107,30 @@ public class Customer extends User {
 	 */
 	public void accessFidelityPoints() {
 		
+	}
+	
+	public void displayOrders() {
+		   
+	    System.out.println("Completed Orders (" + this.orderHistory.size()+")");
+
+	    if (this.orderHistory.isEmpty()) {
+	        System.out.println("No completed orders yet.");
+	        return;
+	    }
+
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    int orderNumber = 1; 
+
+	    for (Order order : this.orderHistory) {
+	        
+	        System.out.println("\nOrder #" + orderNumber++ + ":");
+	        
+	        Calendar orderDate = order.getOrderDate();
+	        String formattedDate = dateFormat.format(orderDate.getTime());
+	        System.out.println("Delivered • " + formattedDate + " • Total: €" + String.format("%.2f", order.getFinalPrice()));
+	        
+	        System.out.println(order.toString());
+	    }
 	}
 	
 	

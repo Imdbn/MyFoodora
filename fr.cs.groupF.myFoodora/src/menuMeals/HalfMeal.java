@@ -9,10 +9,7 @@ import java.util.ArrayList;
  */
 public class HalfMeal extends Meal {
 
-    public HalfMeal(String mealName, boolean isVegetarian, boolean isGlutenFree, boolean mealOfTheWeek) {
-        super(mealName, isVegetarian, isGlutenFree, mealOfTheWeek);
-        this.mealComposition = new ArrayList<>();
-    }
+   
 
     public HalfMeal(String mealName, boolean isVegetarian, boolean isGlutenFree) {
         super(mealName, isVegetarian, isGlutenFree);

@@ -13,7 +13,7 @@ public abstract class Meal extends FoodItem{
 	 * Whether it is meal of the week or Not
 	 */
 	
-	protected boolean mealOfTheWeek;
+	protected boolean mealOfTheWeek = false;
 	
 	/*
 	 * List of dishes which compose the Meal
@@ -23,14 +23,10 @@ public abstract class Meal extends FoodItem{
 	
 	
 	public Meal (String name) {
-		super();
-		this.name=name;
+		super(name);
 	}
 	
-	public Meal (String name, boolean isVegetarian, boolean isGlutenFree, boolean mealOfTheWeek){
-		super(name,isVegetarian,isGlutenFree);
-		this.mealOfTheWeek=mealOfTheWeek;		
-		}
+
 	
 	public Meal (String name, boolean isVegetarian, boolean isGlutenFree){
 		super(name,isVegetarian,isGlutenFree);
@@ -51,14 +47,14 @@ public abstract class Meal extends FoodItem{
 	 * Checks whether meal is the meal of the week.
 	 */
 	
-	public boolean ismealOfTheWeek() {
+	public boolean isMealOfTheWeek() {
 		return mealOfTheWeek;
 	}
 	/** 
 	 * 	Sets the meal-of-the-week status of the meal.
 	 */
 	
-	public void setmealOfTheWeek(boolean mealOfTheWeek) {
+	public void setMealOfTheWeek(boolean mealOfTheWeek) {
 		this.mealOfTheWeek = mealOfTheWeek; 
 	}
 	
@@ -66,7 +62,7 @@ public abstract class Meal extends FoodItem{
 	 * Gets the Meal's composition
 	 */
 	
-	public ArrayList<Dish> getmealComposition() {
+	public ArrayList<Dish> getMealComposition() {
 		return mealComposition;
 	}
 	
@@ -74,7 +70,7 @@ public abstract class Meal extends FoodItem{
 	 * Sets the Meal's composition
 	 */
 	
-	public void setmealComposition(ArrayList<Dish> mealComposition){
+	public void setMealComposition(ArrayList<Dish> mealComposition){
 		this.mealComposition = mealComposition;
 	}
 
