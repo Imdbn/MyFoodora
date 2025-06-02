@@ -5,10 +5,7 @@ import java.util.ArrayList;
 
 public class FullMeal extends Meal{
 	
-	public FullMeal(String mealName, boolean isVegetarian, boolean isGlutenFree, boolean mealOftheWeek) {
-		super(mealName, isVegetarian, isGlutenFree,mealOftheWeek);
-		this.mealComposition = new ArrayList<Dish>();
-	}
+	
 	
 	public FullMeal(String mealName, boolean isVegetarian, boolean isGlutenFree) {
 		super(mealName, isVegetarian, isGlutenFree);

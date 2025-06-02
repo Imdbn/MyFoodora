@@ -1,7 +1,11 @@
 package coreSystem;
 import java.util.*;
+
+
 import users.*; 
 import exceptions.*;
+import targetProfitPolicy.*;
+import DeliveryPolicy.*;
 
 public class CoreSystem {
 	//==========================================================================================================================================================================================
@@ -16,12 +20,12 @@ public class CoreSystem {
 	private static List<Order> orders = new ArrayList<>();
 	private static Optional<User> currentUser ;
 	private static Optional<UserType> currentUserType ;
+	private static TargetProfitPolicy targetProfitPolicy ;
+	private static DeliveryPolicy deliveryPolicy;
 	
-	private double serviceFee ;
-	private double markUpPercentage;
-	
-
-	private double deliveryCost;
+	private static double serviceFee ;
+	private static double markUpPercentage;
+	private static double deliveryCost;
 
 	
 	//===========================================================================================================================================================================================
@@ -54,9 +58,6 @@ public class CoreSystem {
 	// Getters and Setters
 	
 
-	public double getServiceFee() {
-		return serviceFee;
-	}
 
 	public static Map<String, Customer> getCustomers() {
 		return customers;
@@ -115,31 +116,76 @@ public class CoreSystem {
 		CoreSystem.orders = orders;
 	}
 
-
-
-	public void setServiceFee(double serviceFee) {
-		this.serviceFee = serviceFee;
-	}
-
-	public double getMarkUpPercentage() {
+	public static double getMarkUpPercentage() {
 		return markUpPercentage;
 	}
 
-	public void setMarkUpPercentage(double markUpPercentage) {
-		this.markUpPercentage = markUpPercentage;
+
+
+	public static void setMarkUpPercentage(double markUpPercentage) {
+		CoreSystem.markUpPercentage = markUpPercentage;
 	}
 
-	public double getDeliveryCost() {
+
+
+	public static double getDeliveryCost() {
 		return deliveryCost;
 	}
 
-	public void setDeliveryCost(double deliveryCost) {
-		this.deliveryCost = deliveryCost;
+
+
+	public static void setDeliveryCost(double deliveryCost) {
+		CoreSystem.deliveryCost = deliveryCost;
 	}
+
+
+
+	public static void setServiceFee(double serviceFee) {
+		CoreSystem.serviceFee = serviceFee;
+	}
+	
+	public static double getServiceFee() {
+		return serviceFee;
+	}
+	
+	public static TargetProfitPolicy getTargetProfitPolicy() {
+		return targetProfitPolicy;
+	}
+
+
+
+	public static void setTargetProfitPolicy(TargetProfitPolicy targetProfitPolicy) {
+		CoreSystem.targetProfitPolicy = targetProfitPolicy;
+	}
+	
+	public static DeliveryPolicy getDeliveryPolicy() {
+		return deliveryPolicy;
+	}
+
+
+
+	public static void setDeliveryPolicy(DeliveryPolicy deliveryPolicy) {
+		CoreSystem.deliveryPolicy = deliveryPolicy;
+	}
+	
+	public static ArrayList<Courier> getOnDutyCouriers(Map<String, Courier> couriersMap) {
+        ArrayList<Courier> onDutyList = new ArrayList<>();
+        for (Courier courier : couriersMap.values()) {
+            if (courier.isOnDuty()) {
+                onDutyList.add(courier);
+            }
+        }
+        return onDutyList;
+	}
+	
 	
 //==============================================================================================================================================================================================
 //Methods
 	
+	
+
+
+
 	public static void addDefaultManagers() {
 		Manager CEO = new Manager("CEO", "Admin", "1234", "Imad");
         Manager deputy = new Manager("Deputy", "admin", "1234", "Farah");
@@ -243,6 +289,17 @@ public class CoreSystem {
 			 throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
 	}
 	
+	public double computeTotalIncomeLastMonth() throws PermissionDeniedException{
+		if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
+			Calendar now = Calendar.getInstance();
+			Calendar lastMonth = (Calendar) now.clone();
+			lastMonth.add(Calendar.MONTH, -1); 
+			return ((Manager)currentUser.get()).computeTotalIncome(lastMonth, now);		
+		}
+		else 
+			 throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
+	}
+	
 	//Computing total Profit
 	public double computeTotalProfit() throws PermissionDeniedException{
 		if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
@@ -275,6 +332,17 @@ public class CoreSystem {
 		else 
 			 throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
 	}
+	// Compute Number of Orders Last month
+	public int computeNumberOfOrdersLastMonth() throws PermissionDeniedException{
+		if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
+			Calendar now = Calendar.getInstance();
+			Calendar lastMonth = (Calendar) now.clone();
+			lastMonth.add(Calendar.MONTH, -1); 
+			return ((Manager)currentUser.get()).computeNumberOfOrders(lastMonth , now);		
+		}
+		else 
+			 throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
+	}
 	
 	
 	//Shows the Sorted Couriers with regards to delivery counter
@@ -298,4 +366,13 @@ public class CoreSystem {
 		else 
 			throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
 	}
+
+
+
+
+
+
+
+	
+
 }

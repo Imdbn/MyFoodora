@@ -13,14 +13,18 @@ public class Dish extends FoodItem {
 	private DishCategory category; 
 	
 	// Default constructor
-    public Dish() {
-        super();
+    public Dish(String name) {
+        super(name);
     }
 	
 	public Dish( String name, boolean isVegetarian, double price, boolean isGlutenFree, DishCategory category) {
         super( name, isVegetarian, price, isGlutenFree);
         this.category = category;
     }
+	
+	public Dish(String name,boolean isVegetarian, boolean isGlutenFree) {
+		super(name,isVegetarian,isGlutenFree);
+	}
 	
 	/**
      * Gets the category of the dish.

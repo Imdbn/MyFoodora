@@ -6,12 +6,12 @@ public class AddDishVisitorImpl implements AddDishVisitor {
 
     @Override
     public void visit(Dish dish, HalfMeal halfMeal) throws BadMealCompositionCreationException {
-        if (halfMeal.getmealComposition().size() == 2) {
+        if (halfMeal.getMealComposition().size() == 2) {
             throw new BadMealCompositionCreationException("Attempt to add third item to a half-meal.");
         }
 
-        if (halfMeal.getmealComposition().size() == 1) {
-            Dish existingDish = halfMeal.getmealComposition().get(0);
+        if (halfMeal.getMealComposition().size() == 1) {
+            Dish existingDish = halfMeal.getMealComposition().get(0);
 
 
             if (dish.getCategory().equals(existingDish.getCategory())) {
@@ -33,16 +33,16 @@ public class AddDishVisitorImpl implements AddDishVisitor {
         }
 
         
-        halfMeal.getmealComposition().add(dish);
+        halfMeal.getMealComposition().add(dish);
     }
 
     @Override
     public void visit(Dish dish, FullMeal fullMeal) throws BadMealCompositionCreationException {
-        if (fullMeal.getmealComposition().size() == 3) {
+        if (fullMeal.getMealComposition().size() == 3) {
             throw new BadMealCompositionCreationException("Attempt to add fourth item to a full-meal.");
         }
 
-        for (Dish existingDish : fullMeal.getmealComposition()) {
+        for (Dish existingDish : fullMeal.getMealComposition()) {
             if (dish.getCategory().equals(existingDish.getCategory())) {
                 throw new BadMealCompositionCreationException("Attempt to create full-meal with duplicate categories.");
             }
@@ -56,7 +56,7 @@ public class AddDishVisitorImpl implements AddDishVisitor {
             throw new BadMealCompositionCreationException("Attempt to add gluten-containing item to a gluten-free meal.");
         }
 
-        fullMeal.getmealComposition().add(dish);
+        fullMeal.getMealComposition().add(dish);
     }
 }
 

@@ -2,20 +2,32 @@ package users;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+
 import coreSystem.*;
 import exceptions.*;
+import targetProfitPolicy.*;
+import DeliveryPolicy.*;
 
 public class Manager extends User {
 
 	private String surname;
 	private CoreSystem coreSystem;
-	//private DeliveryPolicy deliveryPolicy;
+	
+	private TargetProfitPolicyFactory TPPFactory;
+	private DeliveryPolicyFactory DPFactory;
+	
 
-	public Manager(String name , String username , String password, String surname){//DeliveryPolicy deliveryPolicy) {
+	public Manager(String name , String username , String password, String surname){
 		super(name,username,password);
 		this.surname = surname;
 		this.coreSystem = CoreSystem.getInstance();
+		this.TPPFactory = new TargetProfitPolicyFactory();
+		this.DPFactory = new DeliveryPolicyFactory();
 	}
+	
+	
+	
+	
 	public String getSurname() {
 		return surname;
 	}
@@ -25,16 +37,19 @@ public class Manager extends User {
 		this.surname = surname;
 	}
 
+	
+	public void setTargetProfitPolicy(TargetProfitPolicyType targetProfitPolicy,double targetProfit) throws UndefinedPolicyException, UnreachableTargetProfitException, PermissionDeniedException {
+		TargetProfitPolicy TPP = TPPFactory.createTargetProfitPolicy(targetProfitPolicy);
+		TPP.setParam(coreSystem, targetProfit);
+		CoreSystem.setTargetProfitPolicy(TPP);
+	}
+	
+	public void setDeliveryPolicyFactory(DeliveryPolicyType deliveryPolicy) throws NoCourierIsAvailableException, UndefinedPolicyException{
+		DeliveryPolicy DP = DPFactory.createDeliveryPolicy(deliveryPolicy);
+		CoreSystem.setDeliveryPolicy(DP);
+	}
 
 
-//	public DeliveryPolicy getDeliveryPolicy() {
-//		return deliveryPolicy;
-//	}
-//
-//
-//	public void setDeliveryPolicy(DeliveryPolicy deliveryPolicy) {
-//		this.deliveryPolicy = deliveryPolicy;
-//	}
 
 // Adding Users
 	public void addCustomer(Customer customer) throws UserAlreadyExistsException {
@@ -144,6 +159,18 @@ public class Manager extends User {
 		}
 		return averageIncomePerCostumer;
 	}
+	
+	public int computeNumberOfOrders(Calendar cal1 , Calendar cal2) {
+		int numberOfOrders = 0 ;
+		for(Order order : CoreSystem.getOrders()){
+			Calendar dateOfOrder = order.getOrderDate();
+			if ((dateOfOrder.compareTo(cal1)>=0)&&(dateOfOrder.compareTo(cal2)<=0)){
+				numberOfOrders+= 1 ;
+			}
+		}
+		return numberOfOrders;
+	}
+	
 	public void showSortedRestaurants() {
 		RestaurantSorter restSorter = new RestaurantSorter();
 		ArrayList<Restaurant> sortedRestaurants =restSorter.sort(CoreSystem.getRestaurants());
@@ -162,15 +189,7 @@ public class Manager extends User {
 		}
 	}
 
-	public void setDeliveryPolicy() {
-		// TODO - implement Manager.setDeliveryPolicy
-		throw new UnsupportedOperationException();
-	}
 
-	public void determinParamToMeetTargetProfit() {
-		// TODO - implement Manager.determinParamToMeetTargetProfit
-		throw new UnsupportedOperationException();
-	}
 	
 	@Override
 	public String toString() {
@@ -181,6 +200,11 @@ public class Manager extends User {
 	            ", surname='" + surname + '\'' +
 	            '}';
 	}
+
+
+
+
+
 
 
 }

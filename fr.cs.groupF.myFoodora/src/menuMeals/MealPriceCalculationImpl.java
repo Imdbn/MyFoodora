@@ -7,8 +7,8 @@ public class MealPriceCalculationImpl implements MealPriceCalculation {
     public double calculatePrice(Meal meal, double discount) {
         double total = 0.0;
 
-        for (Dish dish : meal.getmealComposition()) {
-            total += dish.getprice();
+        for (Dish dish : meal.getMealComposition()) {
+            total += dish.getPrice();
         }
 
  

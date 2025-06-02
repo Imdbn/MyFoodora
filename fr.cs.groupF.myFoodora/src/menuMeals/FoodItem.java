@@ -9,9 +9,10 @@ package menuMeals;
 public abstract class FoodItem{
 	protected int id;
 	protected String name;
-	protected boolean isVegetarian;
+	protected boolean isVegetarian = false;
 	protected double price;
-	protected boolean isGlutenFree;
+	protected boolean isGlutenFree = false;
+	protected int orderedFrequency;
 	
 	
 	
@@ -24,7 +25,7 @@ public abstract class FoodItem{
 	 * @param price
 	 * @param isGlutenFree Gluten-free or not
 	 */
-	
+
 	public FoodItem( String name, boolean isVegetarian, double price, boolean isGlutenFree) {
 		FoodItemIdGenerator idgen = FoodItemIdGenerator.getInstance();
 		this.id = idgen.getNextFoodItemId();
@@ -45,81 +46,76 @@ public abstract class FoodItem{
 		
 	}
 	
-	public FoodItem() {
+	public FoodItem(String name) {
 		FoodItemIdGenerator idgen = FoodItemIdGenerator.getInstance();
 		this.id = idgen.getNextFoodItemId();
+		this.name = name;
 	  
 	}
 
-	/**
-	 * Gets the FoodItem's id
-	 */
-	
+
 	public int getId() {
 		return id;
 	}
-	
-	/** 
-	 * Gets the FoodItem's name
-	 */
-	
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
 	public String getName() {
 		return name;
 	}
-	
-	/**
-	 * Sets the FoodItem's name
-	 */
+
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	/**
-	 * Gets the FoodItem's price
-	 */
-	public double getprice() {
-		return price;
-	}
-	
-	/**
-	 * Sets the FoodItem's price
-	 */
-	public void setprice(double price) {
-		this.price = price;
-	}
-	
-	/** 
-	 * Checks whether the component is vegetarian.
-	 */
-	
-	public boolean isVegetarian(){
+
+
+	public boolean isVegetarian() {
 		return isVegetarian;
 	}
-	/** 
-	 * 	Sets the vegetarian status of the component.
-	 */
-	
-	public void setisVegetarian(boolean isVegetarian) {
+
+
+	public void setVegetarian(boolean isVegetarian) {
 		this.isVegetarian = isVegetarian;
 	}
-	
-	/** 
-	 * Checks whether the component is gluten-free.
-	 */
-	
-	public boolean isGlutenFree(){
-		return isGlutenFree;
-	
+
+
+	public double getPrice() {
+		return price;
 	}
 
-	/** 
-	 * 	Sets the gluten-free status of the component.
-	 */
-	
-	public void setisGlutenFree(boolean isGlutenFree) {
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+
+	public boolean isGlutenFree() {
+		return isGlutenFree;
+	}
+
+
+	public void setGlutenFree(boolean isGlutenFree) {
 		this.isGlutenFree = isGlutenFree;
 	}
-	
+
+
+	public int getOrderedFrequency() {
+		return orderedFrequency;
+	}
+
+
+	public void setOrderedFrequency(int orderedFrequency) {
+		this.orderedFrequency = orderedFrequency;
+	}
+
+	public void incrementOrderedFrequency() {
+		this.orderedFrequency++;
+	}
 	
 	
 }

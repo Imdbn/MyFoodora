@@ -1,50 +1,102 @@
 package menuMeals;
 
-import java.util.*;
+import java.util.HashMap;
+import exceptions.*;
 
-/**
- * This class represents a Menu that contains both Meals and Dishes.
- * It allows adding and removing Meals and Dishes separately.
- */
 public class Menu {
+	
+	//==========================================================================================================================================================================================================
+	//Fields
+	//==========================================================================================================================================================================================================
 
-    private ArrayList<Dish> dishes;
+	private HashMap<String,Dish> items;
+	
+	//==========================================================================================================================================================================================================
+	//Constructors
+	//==========================================================================================================================================================================================================
 
-    // Constructor initializes empty lists
-    public Menu() {
-        this.dishes = new ArrayList<>();
-    }
+	public Menu() {
+		this.items = new HashMap<String,Dish>();
+	}
+	public Menu(HashMap<String,Dish> items) {
+		this.items = items;
+	}
+	
+	
+	//==========================================================================================================================================================================================================
+	//Getters and setters
+	//==========================================================================================================================================================================================================
 
-    public ArrayList<Dish> getDishes() {
-        return dishes;
-    }
+	
+	public HashMap<String,Dish> getItems() {
+		return items;
+	}
+	
 
+	public void setItems(HashMap<String,Dish> items) {
+		this.items = items;
+	}
+	
+	
+	//==========================================================================================================================================================================================================
+	//Methods
+	//==========================================================================================================================================================================================================
 
-    // Add a Dish if not already present
-    public void addDish(Dish dish) {
-        if (!dishes.contains(dish)) {
-            dishes.add(dish);
-        }
-    }
+	public void addDish(Dish item) throws ItemAlreadyExistsException {
+		if(!items.containsValue(item)) {
+			items.put(item.getName(), item);
+		}
+		else throw new ItemAlreadyExistsException("Sorry, but the item that you are trying to add to the menu, already exists.");
+	}
+	public void addDish(String itemName) throws ItemAlreadyExistsException {
+		if(!items.containsKey(itemName)) {
+			items.put(itemName,new Dish(itemName));
+		}
+		else throw new ItemAlreadyExistsException("Sorry, but the item that you are trying to add to the menu, already exists.");
+	}
+	
+	public void removeDish(FoodItem item) throws ItemNotFoundException{
+		if(items.containsValue(item)) {
+			items.remove(item.getName());
+		}
+		else throw new ItemNotFoundException("Sorry, but the item that you are trying to remove from the menu, doesn't exist.");
+	}
+	
+	public void removeDish(String itemName) throws ItemNotFoundException{
+		if(items.containsKey(itemName)) {
+			items.remove(itemName);
+		}
+		else throw new ItemNotFoundException("Sorry, but the item that you are trying to remove from the menu, doesn't exist.");
+	}
+	
+	
+	public Dish getDish(String itemName) throws ItemNotFoundException {
+		if(items.containsKey(itemName)) {
+			return  items.get(itemName);
+			
+		}
+		else throw new ItemNotFoundException("Sorry, but the item that you are trying to get from the menu, doesn't exist.");
+	}
+	
+	
+	
+	
+	
+	//==========================================================================================================================================================================================================
+	//ToString
+	//==========================================================================================================================================================================================================
 
-    // Remove a Dish if present
-    public void removeDish(Dish dish) {
-        dishes.remove(dish);
-    }
-
-    // String representation of the Menu showing meals and dishes
-    @Override
-    public String toString() {
-        StringBuilder menu = new StringBuilder();
-        if (!dishes.isEmpty()) {
-        	menu.append("Dishes in the menu:\n");
-            for (Dish dish : dishes) {
-            	menu.append(dish.getName()).append("\n");
-            }
-        } else {
-           menu.append("No dishes in the menu.\n");
-        }
-
-        return menu.toString();
-    }
+	@Override
+	public String toString() {
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("Menu Items:\n");
+	    if (items.isEmpty()) {
+	        sb.append("No items in the menu.");
+	    } else {
+	        for (FoodItem item : items.values()) {
+	            sb.append("- ").append(item.toString()).append("\n");
+	        }
+	    }
+	    return sb.toString();
+	}
 }
