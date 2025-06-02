@@ -2,7 +2,7 @@ package FidelityCards;
 
 import users.Order;
 
-public class PointFidelityCard extends FidelityCards {
+public class PointFidelityCard extends FidelityCard {
 	
 	/*
 	 * Depends on the customer, the number of points accumulated so far.

@@ -2,8 +2,8 @@ package FidelityCards;
 
 public class FidelityCardFactory {
 	
-	public static FidelityCards createFidelityCard(String cardType) {
-		FidelityCards card = null;
+	public static FidelityCard createFidelityCard(String cardType) {
+		FidelityCard card = null;
 		if ( cardType.equalsIgnoreCase(FidelityCardType.BASIC.toString()) ){
 			card=  new BasicFidelityCard();
 		}

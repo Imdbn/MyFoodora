@@ -2,7 +2,7 @@ package FidelityCards;
 
 import users.Order;
 
-public class BasicFidelityCard extends FidelityCards {
+public class BasicFidelityCard extends FidelityCard {
 	
 
 	public BasicFidelityCard() {

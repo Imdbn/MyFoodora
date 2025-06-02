@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 import menuMeals.Meal;
 import users.Order;
 
-public class LotteryFidelityCard extends FidelityCards {
+public class LotteryFidelityCard extends FidelityCard {
 	
 	private static double probability=0.5;
 	

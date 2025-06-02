@@ -1,14 +1,14 @@
 package FidelityCards;
 import users.Order;
 
-public abstract class FidelityCards {
+public abstract class FidelityCard {
 	protected FidelityCardType type;
 	
-	public FidelityCards() {
+	public FidelityCard() {
 		
 	}
 	
-	public FidelityCards(FidelityCardType type) {
+	public FidelityCard(FidelityCardType type) {
 		this.type = type;
 	}
 
