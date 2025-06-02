@@ -1,4 +1,4 @@
-package FidelityCards;
+package fidelityCards;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Map.Entry;

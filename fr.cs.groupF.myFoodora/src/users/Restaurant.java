@@ -3,12 +3,13 @@ import java.util.*;
 
 import exceptions.*;
 import menuMeals.*;
+import notificationService.NotificationService;
+import notificationService.Offer;
 
 public class Restaurant extends User{
 	private Coordinate location ;
 	private Menu menu;
     private HashMap<String,Meal> meals;
-    private FoodFactory foodFactory = new FoodFactory() ;
     private MealPriceCalculation mealPriceStrategy = new MealPriceCalculationImpl();
 	private double genericDiscount = 0.05;
 	private double specialDiscount = 0.1;
@@ -47,21 +48,10 @@ public class Restaurant extends User{
 	
 
 	public double getSpecialDiscount() {
+		
 		return specialDiscount;
 	}
-	/**
-	 * establishes the generic Discount
-	 */
-	public void setGenericDiscount(double genericDiscount) {
-		this.genericDiscount = genericDiscount;
-	}
-	/**
-	 * establishes the special Discount
-	 */
 
-	public void setSpecialDiscount(double specialDiscount) {
-		this.specialDiscount = specialDiscount;
-	}
 
 	public Coordinate getLocation() {
 		return location;
@@ -128,13 +118,20 @@ public class Restaurant extends User{
 	//Adding meals and removing them 		
 	// To be Revisited in case of MealOfTheWeek Notification
 	public void addMeal(Meal meal) throws ItemAlreadyExistsException {
-		if(!meals.containsValue(meal)) {
+
+		if(meal.isMealOfTheWeek()) {
+			NotificationService.getInstance().setOffer(meal, this, Offer.MEALOFTHEWEEK);
+			meal.setPrice(this.mealPriceStrategy.calculatePrice(meal, this.specialDiscount));
+		}
+		else {
+			meal.setPrice(this.mealPriceStrategy.calculatePrice(meal, this.genericDiscount));
+		}
+			if(!meals.containsValue(meal)) {
 			meals.put(meal.getName(),meal);
 			
 		}
 		else throw new ItemAlreadyExistsException("Sorry but the meal you are trying to add already exists");
 	}
-	
 	
 	
 	public void addMeal(String mealName, MealType mealType) throws UndefinedTypeException, ItemAlreadyExistsException {
@@ -167,9 +164,32 @@ public class Restaurant extends User{
 		else throw new ItemNotFoundException("Sorry but the meal you are trying to remove doesn't exist");
 	}
 	
+	public void setGenericDiscount(double genericDiscount) {
+		this.genericDiscount = genericDiscount;
+		NotificationService.getInstance().setOffer(null,this,Offer.GENERICDISCOUNT);
+	}
+
+	public void setSpecialDiscount(double specialDiscount) {
+		this.specialDiscount = specialDiscount;
+		NotificationService.getInstance().setOffer(null,this,Offer.SPECIALDISCOUNT);
+	}
 	
+	public void setMealOfTheWeek(Meal meal) throws ItemNotFoundException {
+		if(!meals.containsValue(meal)) {
+		meal.setMealOfTheWeek(true);
+		NotificationService.getInstance().setOffer(meal,this,Offer.MEALOFTHEWEEK);
+		}
+		else throw new ItemNotFoundException("Sorry but the meal you are trying to set as Meal of the Week doesn't exist");
+	}
 	
-	
+	public void setMealOfTheWeek(String mealName) throws ItemNotFoundException {
+		if(meals.containsKey(mealName)) {
+			Meal meal =meals.get(mealName);
+			NotificationService.getInstance().setOffer(meal,this,Offer.MEALOFTHEWEEK);
+
+		}
+		else throw new ItemNotFoundException("Sorry but the meal you are trying to remove doesn't exist");
+	}
 	//Show meal
 	
 	
@@ -220,6 +240,54 @@ public class Restaurant extends User{
 		setMealPrice(meal);
 	}
 	
+	
+	
+	
+	
+	public void setSpecialOffer(String mealName) throws ItemNotFoundException {
+		if(meals.containsKey(mealName)) {
+			Meal meal = meals.get(mealName);
+			if (!meal.isMealOfTheWeek()) {
+				meal.setMealOfTheWeek(true);
+				this.setMealPrice(meal);
+				NotificationService.getInstance().setOffer(meal,this,Offer.MEALOFTHEWEEK);
+			}
+		}
+		else throw new ItemNotFoundException("Sorry but the meal you are trying to set as Meal of the Week doesn't exist");
+	}
+	
+	public void setSpecialOffer(Meal meal) throws ItemNotFoundException {
+		if(meals.containsValue(meal)) {
+			if (!meal.isMealOfTheWeek()) {
+				meal.setMealOfTheWeek(true);
+				this.setMealPrice(meal);
+				NotificationService.getInstance().setOffer(meal,this,Offer.MEALOFTHEWEEK);
+			}
+		}
+		else throw new ItemNotFoundException("Sorry but the meal you are trying to set as Meal of the Week doesn't exist");
+	}
+	
+	
+	public void removeFromSpecialOffer(String mealName) throws ItemNotFoundException {
+		if(meals.containsKey(mealName)) {
+			Meal meal = meals.get(mealName);
+			if (meal.isMealOfTheWeek()) {
+				meal.setMealOfTheWeek(false);
+				this.setMealPrice(meal);
+			}
+		}
+		else throw new ItemNotFoundException("Sorry but the meal you are trying to remove from Meal of the Week doesn't exist");
+	}
+	
+	public void removeFromSpecialOffer(Meal meal) throws ItemNotFoundException {
+		if(meals.containsValue(meal)) {
+			if (meal.isMealOfTheWeek()) {
+				meal.setMealOfTheWeek(false);
+				this.setMealPrice(meal);
+			}
+		}
+		else throw new ItemNotFoundException("Sorry but the meal you are trying to remove from Meal of the Week doesn't exist");
+	}
 	// Show Sorted FoodItems
 	
 	public void showSortedHalfMeals() {

@@ -1,4 +1,4 @@
-package DeliveryPolicy;
+package deliveryPolicy;
 
 import exceptions.*;
 
@@ -9,7 +9,7 @@ public class DeliveryPolicyFactory {
 		
 	}
 	
-	public DeliveryPolicy createDeliveryPolicy(DeliveryPolicyType deliveryPolicy) throws UndefinedPolicyException {
+	public static DeliveryPolicy createDeliveryPolicy(DeliveryPolicyType deliveryPolicy) throws UndefinedPolicyException {
 		switch (deliveryPolicy) {
         case FASTEST:
             return new FairOccupation();

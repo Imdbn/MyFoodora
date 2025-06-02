@@ -1,4 +1,4 @@
-package FidelityCards;
+package fidelityCards;
 
 import users.Order;
 

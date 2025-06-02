@@ -5,7 +5,7 @@ public class TargetProfitPolicyFactory {
     public TargetProfitPolicyFactory() {
     }
 
-    public TargetProfitPolicy createTargetProfitPolicy(TargetProfitPolicyType targetProfitPolicyType) throws UndefinedPolicyException{
+    public static TargetProfitPolicy createTargetProfitPolicy(TargetProfitPolicyType targetProfitPolicyType) throws UndefinedPolicyException{
         switch (targetProfitPolicyType) {
             case DELIVERYCOST:
                 return new TargetProfitDeliveryCost();

@@ -1,4 +1,4 @@
-package FidelityCards;
+package fidelityCards;
 
 import users.Order;
 
@@ -7,7 +7,7 @@ public class PointFidelityCard extends FidelityCard {
 	/*
 	 * Depends on the customer, the number of points accumulated so far.
 	 */
-	private int points = 0;
+	private double points = 0;
 	
 	/*
 	 * the price to reach in order to receive 1 point
@@ -19,7 +19,7 @@ public class PointFidelityCard extends FidelityCard {
 	 * the number of points to reach in order to get a discount in the next order
 	 */
 	
-	private static int targetPoints = 100 ;
+	private static double targetPoints = 100 ;
 	
 	/**
 	 * the rate of the discount applied when the targetPoints value is reached
@@ -51,27 +51,27 @@ public class PointFidelityCard extends FidelityCard {
 		return initialPrice - reduction;
 	}
 	
-	public void addPoints(int numberPoints) {
+	public void addPoints(double numberPoints) {
 		this.points+=numberPoints;
 	}
 	
-	public int computeNumberAddedPoints(double price) {
-		return (int) (price/amountReduction);
+	public double computeNumberAddedPoints(double price) {
+		return price/amountReduction;
 	}
 
 	public void updatePoints(double price) {
 
-		int numberPoints = this.computeNumberAddedPoints(price);
+		double numberPoints = this.computeNumberAddedPoints(price);
 		this.addPoints(numberPoints);
 
 	}
 
-	public int getPoints() {
+	public double getPoints() {
 		return points;
 	}
 
 
-	public void setPoints(int points) {
+	public void setPoints(double points) {
 		this.points = points;
 	}
 
@@ -86,12 +86,12 @@ public class PointFidelityCard extends FidelityCard {
 	}
 
 
-	public static int getTargetPoints() {
+	public static double getTargetPoints() {
 		return targetPoints;
 	}
 
 
-	public static void setTargetPoints(int targetPoints) {
+	public static void setTargetPoints(double targetPoints) {
 		PointFidelityCard.targetPoints = targetPoints;
 	}
 

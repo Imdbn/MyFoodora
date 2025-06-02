@@ -1,4 +1,4 @@
-package DeliveryPolicy;
+package deliveryPolicy;
 
 import users.Courier;
 import users.Order;

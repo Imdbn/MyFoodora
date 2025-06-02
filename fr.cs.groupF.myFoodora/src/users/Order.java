@@ -7,6 +7,7 @@ import coreSystem.*;
 import exceptions.ItemNotFoundException;
 import exceptions.NoCourierIsAvailableException;
 import menuMeals.*;
+import fidelityCards.*;
 
 public class Order {
 	// ========================================================================================================================================================================================
@@ -29,7 +30,6 @@ public class Order {
 	// Constructors 
 	//=========================================================================================================================================================================================
 	public Order(Customer customer , Restaurant restaurant) {
-		CoreSystem.getRestaurants().get(restaurant.getName()).incrementOrderCounter();
 		OrderIdGenerator idgen = OrderIdGenerator.getInstance();
 		this.id = idgen.getNextOrderId();
 		this.orderDate = Calendar.getInstance();
@@ -167,6 +167,15 @@ public class Order {
 		return price;
 	}
 	
+	public double computeFinalPrice() {
+		FidelityCard fidelityCard = this.customer.getFidelityCard();
+		
+		double finalPrice = fidelityCard.computeOrderPrice(this);
+		
+		this.setFinalPrice(finalPrice);
+		return finalPrice;
+	}
+	
 	
 	
 	
@@ -178,13 +187,14 @@ public class Order {
 
 	
 
-	public void submitOrder(double totalPrice) throws NoCourierIsAvailableException {
+	public void submitOrder() throws NoCourierIsAvailableException {
+		CoreSystem.getRestaurants().get(restaurant.getName()).incrementOrderCounter();
 		CoreSystem.getDeliveryPolicy().allocateCourier(this);
     	coreSystem.addOrder(this);
     	this.customer.getOrderHistory().add(this);
     	this.computePrice();
     	this.computeProfit();
-    	//this.computeTotalPrice();
+    	this.computeFinalPrice();
     	
     	
     	/*
@@ -204,7 +214,7 @@ public class Order {
     	
     	System.out.println("Order : ");
     	System.out.println(this);
-    	System.out.println("The price of the order, including service fee, markup percentage and deliveryCost is : "+ totalPrice);
+    	System.out.println("The price of the order, including service fee, markup percentage and deliveryCost is : "+ this.finalPrice);
 			
 	}
 	

@@ -1,28 +1,27 @@
 package users;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Calendar;
-
+import java.util.Map;
 
 import coreSystem.*;
+import deliveryPolicy.*;
 import exceptions.*;
+import menuMeals.*;
 import targetProfitPolicy.*;
-import DeliveryPolicy.*;
+import fidelityCards.*;
 
 public class Manager extends User {
 
 	private String surname;
 	private CoreSystem coreSystem;
 	
-	private TargetProfitPolicyFactory TPPFactory;
-	private DeliveryPolicyFactory DPFactory;
-	
+
 
 	public Manager(String name , String username , String password, String surname){
 		super(name,username,password);
 		this.surname = surname;
 		this.coreSystem = CoreSystem.getInstance();
-		this.TPPFactory = new TargetProfitPolicyFactory();
-		this.DPFactory = new DeliveryPolicyFactory();
+
 	}
 	
 	
@@ -39,18 +38,20 @@ public class Manager extends User {
 
 	
 	public void setTargetProfitPolicy(TargetProfitPolicyType targetProfitPolicy,double targetProfit) throws UndefinedPolicyException, UnreachableTargetProfitException, PermissionDeniedException {
-		TargetProfitPolicy TPP = TPPFactory.createTargetProfitPolicy(targetProfitPolicy);
+		TargetProfitPolicy TPP = TargetProfitPolicyFactory.createTargetProfitPolicy(targetProfitPolicy);
 		TPP.setParam(coreSystem, targetProfit);
 		CoreSystem.setTargetProfitPolicy(TPP);
 	}
 	
-	public void setDeliveryPolicyFactory(DeliveryPolicyType deliveryPolicy) throws NoCourierIsAvailableException, UndefinedPolicyException{
-		DeliveryPolicy DP = DPFactory.createDeliveryPolicy(deliveryPolicy);
+	public void setDeliveryPolicy(DeliveryPolicyType deliveryPolicy) throws NoCourierIsAvailableException, UndefinedPolicyException{
+		DeliveryPolicy DP = DeliveryPolicyFactory.createDeliveryPolicy(deliveryPolicy);
 		CoreSystem.setDeliveryPolicy(DP);
 	}
 
 
-
+	public void associateCard(Customer customer, FidelityCard fidelityCard) {
+		customer.setFidelityCard(fidelityCard);
+	}
 // Adding Users
 	public void addCustomer(Customer customer) throws UserAlreadyExistsException {
 		if(CoreSystem.getCustomers().get(customer.getUsername()) == null) {
@@ -187,6 +188,26 @@ public class Manager extends User {
 		for(Courier courier : sortedCouriers ) {
 			System.out.println(courier);
 		}
+	}
+	
+	public void showCustomers() {
+		
+		Map<String, Customer> customers = CoreSystem.getCustomers();
+	
+		for (Customer customer : customers.values()) {
+			System.out.println(customer);
+		}
+
+	}
+
+	public void showMenuItems (String restaurantName) throws RestaurantNotFoundException {
+		if(CoreSystem.getRestaurants().containsKey(restaurantName)) {
+			Menu menu = CoreSystem.getRestaurants().get(restaurantName).getMenu();
+			for(Dish dish : menu.getItems().values()) {
+				System.out.println(dish);
+			}
+		}
+		else throw new RestaurantNotFoundException("The restaurant "+restaurantName+" does not exist!");
 	}
 
 

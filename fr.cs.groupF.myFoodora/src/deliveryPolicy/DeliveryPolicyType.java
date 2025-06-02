@@ -1,4 +1,4 @@
-package DeliveryPolicy;
+package deliveryPolicy;
 
 public enum DeliveryPolicyType {
 	FASTEST,

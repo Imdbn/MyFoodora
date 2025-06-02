@@ -2,14 +2,16 @@ package coreSystem;
 import java.util.*;
 
 
+import deliveryPolicy.*;
 import users.*; 
 import exceptions.*;
 import targetProfitPolicy.*;
-import DeliveryPolicy.*;
+import fidelityCards.*;
 
 public class CoreSystem {
-	//==========================================================================================================================================================================================
+	//===========================================================================================================================================================================================================
 	//Fields
+	//===========================================================================================================================================================================================================
 	// Creating a Singleton instance of the app
 	private static CoreSystem instance = null;
 	
@@ -18,18 +20,20 @@ public class CoreSystem {
 	private static Map<String,Courier> couriers = new HashMap<>() ;
 	private static Map<String,Restaurant> restaurants = new HashMap<>();
 	private static List<Order> orders = new ArrayList<>();
+	private static List<Order> customerOrders = new ArrayList<>();
 	private static Optional<User> currentUser ;
 	private static Optional<UserType> currentUserType ;
-	private static TargetProfitPolicy targetProfitPolicy ;
-	private static DeliveryPolicy deliveryPolicy;
+	private static TargetProfitPolicy targetProfitPolicy = new TargetProfitServiceFee();  
+	private static DeliveryPolicy deliveryPolicy = new Fastest();
 	
 	private static double serviceFee ;
 	private static double markUpPercentage;
 	private static double deliveryCost;
 
 	
-	//===========================================================================================================================================================================================
+	//===========================================================================================================================================================================================================
 	// Constructors
+	//===========================================================================================================================================================================================================
 	private CoreSystem() {
 		currentUser = Optional.empty();
 		currentUserType = Optional.empty();
@@ -40,8 +44,8 @@ public class CoreSystem {
 	
 	
 	
-	//==========================================================================================================================================================================================
-	// Instance provider
+	//===========================================================================================================================================================================================================
+	//===========================================================================================================================================================================================================
 	/**
 	 * get instance method to have fulfill the singleton design pattern allowing us to have one single instance of CoreSystem
 	 * 
@@ -54,9 +58,9 @@ public class CoreSystem {
 	}
 	
 	
-	//==========================================================================================================================================================================================
+	//===========================================================================================================================================================================================================
 	// Getters and Setters
-	
+	//===========================================================================================================================================================================================================
 
 
 	public static Map<String, Customer> getCustomers() {
@@ -115,7 +119,18 @@ public class CoreSystem {
 	public static void setOrders(List<Order> orders) {
 		CoreSystem.orders = orders;
 	}
+	
+	public static List<Order> getCustomerOrders() {
+		return customerOrders;
+	}
 
+
+
+	public static void setCustomerOrders(List<Order> customerOrders) {
+		CoreSystem.customerOrders = customerOrders;
+	}
+	
+	
 	public static double getMarkUpPercentage() {
 		return markUpPercentage;
 	}
@@ -179,9 +194,9 @@ public class CoreSystem {
 	}
 	
 	
-//==============================================================================================================================================================================================
-//Methods
-	
+	//===========================================================================================================================================================================================================
+	//Methods
+	//===========================================================================================================================================================================================================	
 	
 
 
@@ -226,10 +241,12 @@ public class CoreSystem {
 	public void logout() {
 		currentUser = Optional.empty();
 		currentUserType = Optional.empty();
+		customerOrders = new ArrayList<>();
 	}
 	
-	
+	//===========================================================================================================================================================================================================
 	//\\ Manager Methods
+	//===========================================================================================================================================================================================================
 	public void addUser(User user) throws PermissionDeniedException , IllegalArgumentException, UserAlreadyExistsException  {
 		if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
 			Manager manager = (Manager) currentUser.get();
@@ -269,6 +286,23 @@ public class CoreSystem {
 		orders.add(order);	
 	}
 	
+	public void setDeliveryPolicyType(DeliveryPolicyType deliveryPolicyType) throws PermissionDeniedException, NoCourierIsAvailableException, UndefinedPolicyException {
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
+    		Manager manager = (Manager) currentUser.get();
+    		manager.setDeliveryPolicy(deliveryPolicyType);
+    	} else {
+    		throw new PermissionDeniedException("Only managers can perform this action.");
+    	}
+    }
+	
+	public void setTargetProfitPolicyType(TargetProfitPolicyType targetProfitPolicyType , double target) throws PermissionDeniedException, UndefinedPolicyException, UnreachableTargetProfitException {
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
+    		Manager manager = (Manager) currentUser.get();
+    		manager.setTargetProfitPolicy(targetProfitPolicyType, target);
+    	} else {
+    		throw new PermissionDeniedException("Only managers can perform this action.");
+    	}
+    }
 	
 	
 	
@@ -367,12 +401,100 @@ public class CoreSystem {
 			throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
 	}
 
+	
+	public void showCustomers() throws PermissionDeniedException{
+		if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
+			((Manager)currentUser.get()).showCustomers();
+		}
+		else 
+			throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
+	}
+	
+	
+	public void showMenuItem(String restaurantName) throws PermissionDeniedException, RestaurantNotFoundException{
+		if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
+			((Manager)currentUser.get()).showMenuItems(restaurantName);
+		}
+		else 
+			throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
+	}
 
 
+    public void associateCard(String userName, FidelityCardType cardType) throws PermissionDeniedException, UndefinedFidelityCardException {
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
+    		FidelityCard card = FidelityCardFactory.createFidelityCard(cardType);
+    		Customer customer = customers.get(userName);
+    		((Manager)currentUser.get()).associateCard(customer, card);
+    	}
+    	else
+    		throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
+    }
 
+	//===========================================================================================================================================================================================================
+    //\\Customer Methods
+    //===========================================================================================================================================================================================================
+
+    
+    public void setConsensusMail(String mail) throws PermissionDeniedException{
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.CUSTOMER) {
+    		((Customer)currentUser.get()).setConsensus(true);
+    		((Customer)currentUser.get()).setContactOffer(ContactOffers.EMAIL,mail);
+    	}
+    	else throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Customer have Permission to use it");
+    }
+
+
+    public void setConsensusPhone(String phone) throws PermissionDeniedException{
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.CUSTOMER) {
+    		((Customer) currentUser.get()).setConsensus(true);
+    		((Customer)currentUser.get()).setContactOffer(ContactOffers.PHONE,phone);
+    	}
+    	else throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Customer have Permission to use it");
+    }
+
+    public Order placeOrder(String restaurantName) throws PermissionDeniedException, RestaurantNotFoundException{
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.CUSTOMER) {
+    		Order order = ((Customer)currentUser.get()).placeOrder(restaurantName);
+    		customerOrders.add(order);
+    		return order;
+    	}
+    	else throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Customer have Permission to use it");
+    }
+    
+    public void addItemToOrder(Order order,String foodItemName, Integer quantity) throws ItemNotFoundException, PermissionDeniedException {
+    	if (currentUserType.orElse(UserType.GUEST) == UserType.CUSTOMER) {
+    		if(customerOrders.contains(order)) {
+    			order.addItemToOrder(foodItemName, quantity);
+    		}
+    		else throw new ItemNotFoundException("Sorry there is no such Order for the current logged in customer.");
+    		
+    	}
+    	else throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Customer have Permission to use it");
+    }
+    
+    public void endOrder(Order order)
 
 
 
 	
-
-}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+ 	}
