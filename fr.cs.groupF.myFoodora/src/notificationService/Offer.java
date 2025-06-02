@@ -1,5 +1,5 @@
 package notificationService;
 
 public enum Offer{
-	mealOfTheWeek, genericDiscount, specialDiscount;
+	MEALOFTHEWEEK, GENERICDISCOUNT, SPECIALDISCOUNT;
 }
