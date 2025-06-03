@@ -28,9 +28,9 @@ public class CoreSystem {
 	private static TargetProfitPolicy targetProfitPolicy = new TargetProfitServiceFee();  
 	private static DeliveryPolicy deliveryPolicy = new Fastest();
 	
-	private static double serviceFee ;
-	private static double markUpPercentage;
-	private static double deliveryCost;
+	private static double serviceFee =2 ;
+	private static double markUpPercentage = 0.3;
+	private static double deliveryCost = 5;
 
 	
 	//===========================================================================================================================================================================================================
@@ -210,6 +210,25 @@ public class CoreSystem {
     	managers.put(deputy.getUsername(),deputy);
     	System.out.println("Successfully added Default Managers to the system");
 	}
+	
+	public double computeTotalIncomeLastMonth() {
+		Calendar now = Calendar.getInstance();
+		Calendar lastMonth = (Calendar) now.clone();
+		lastMonth.add(Calendar.MONTH, -1); 
+		Manager manager = new Manager("CEO", "Admin", "1234", "Imad");
+		return manager.computeTotalIncome(lastMonth, now);		
+}
+	
+	// Compute Number of Orders Last month
+		public int computeNumberOfOrdersLastMonth() {
+			
+				Calendar now = Calendar.getInstance();
+				Calendar lastMonth = (Calendar) now.clone();
+				lastMonth.add(Calendar.MONTH, -1); 
+				Manager manager = new Manager("CEO", "Admin", "1234", "Imad");
+				return manager.computeNumberOfOrders(lastMonth , now);		
+			
+		}
 // Login
 	public String login(String username, String password) throws NoMatchingCredentialsException {
 	    if (tryLogin(managers, username, password, UserType.MANAGER)) {
@@ -325,16 +344,7 @@ public class CoreSystem {
 			 throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
 	}
 	
-	public double computeTotalIncomeLastMonth() throws PermissionDeniedException{
-		if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
-			Calendar now = Calendar.getInstance();
-			Calendar lastMonth = (Calendar) now.clone();
-			lastMonth.add(Calendar.MONTH, -1); 
-			return ((Manager)currentUser.get()).computeTotalIncome(lastMonth, now);		
-		}
-		else 
-			 throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
-	}
+	
 	
 	//Computing total Profit
 	public double computeTotalProfit() throws PermissionDeniedException{
@@ -368,17 +378,7 @@ public class CoreSystem {
 		else 
 			 throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
 	}
-	// Compute Number of Orders Last month
-	public int computeNumberOfOrdersLastMonth() throws PermissionDeniedException{
-		if (currentUserType.orElse(UserType.GUEST) == UserType.MANAGER) {
-			Calendar now = Calendar.getInstance();
-			Calendar lastMonth = (Calendar) now.clone();
-			lastMonth.add(Calendar.MONTH, -1); 
-			return ((Manager)currentUser.get()).computeNumberOfOrders(lastMonth , now);		
-		}
-		else 
-			 throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Manager have Permission to use it");
-	}
+	
 	
 	
 	//Shows the Sorted Couriers with regards to delivery counter

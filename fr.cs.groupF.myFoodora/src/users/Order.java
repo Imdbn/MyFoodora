@@ -180,7 +180,7 @@ public class Order {
 	
 	
 	public double computeProfit() {
-		double profit = this.getPrice()*CoreSystem.getMarkUpPercentage() + CoreSystem.getServiceFee() - CoreSystem.getDeliveryCost();
+		double profit = this.computeFinalPrice()*CoreSystem.getMarkUpPercentage() + CoreSystem.getServiceFee() - CoreSystem.getDeliveryCost();
 		this.setProfit(profit);
 		return profit;
 	}

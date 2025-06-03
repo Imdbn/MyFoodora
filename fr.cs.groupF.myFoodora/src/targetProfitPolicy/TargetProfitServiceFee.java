@@ -26,7 +26,7 @@ public class TargetProfitServiceFee implements TargetProfitPolicy {
      */
     @Override
     public double computeTargetProfitPolicyParam(CoreSystem coreSystem, double targetProfit)
-            throws UnreachableTargetProfitException, PermissionDeniedException {
+            throws UnreachableTargetProfitException {
         
         double totalIncomeLM = coreSystem.computeTotalIncomeLastMonth();
         double markUp = CoreSystem.getMarkUpPercentage();
@@ -35,7 +35,7 @@ public class TargetProfitServiceFee implements TargetProfitPolicy {
         double serviceFee = -1;
 
         if (numberOfOrdersLM != 0) {
-            serviceFee = (totalIncomeLM * markUp - numberOfOrdersLM * deliveryCost - targetProfit) / numberOfOrdersLM;
+            serviceFee = - (totalIncomeLM * markUp - numberOfOrdersLM * deliveryCost - targetProfit) / numberOfOrdersLM;
         } else {
             throw new UnreachableTargetProfitException("Target Profit is Unreachable, since there are no Orders Last Month.");
         }
@@ -57,7 +57,7 @@ public class TargetProfitServiceFee implements TargetProfitPolicy {
      */
     @Override
     public void setParam(CoreSystem coreSystem, double targetProfit)
-            throws UnreachableTargetProfitException, PermissionDeniedException {
+            throws UnreachableTargetProfitException {
         CoreSystem.setServiceFee(computeTargetProfitPolicyParam(coreSystem, targetProfit));
     }
 }

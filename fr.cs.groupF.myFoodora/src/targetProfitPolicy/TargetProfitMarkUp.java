@@ -1,12 +1,12 @@
 package targetProfitPolicy;
 
 import coreSystem.CoreSystem;
-import exceptions.PermissionDeniedException;
-import exceptions.UnreachableTargetProfitException;
+import exceptions.*;
+
 
 public class TargetProfitMarkUp implements TargetProfitPolicy {
 	@Override
-	public double computeTargetProfitPolicyParam(CoreSystem coreSystem,double targetProfit)throws UnreachableTargetProfitException , PermissionDeniedException{
+	public double computeTargetProfitPolicyParam(CoreSystem coreSystem,double targetProfit)throws UnreachableTargetProfitException {
 		double totalIncomeLM = coreSystem.computeTotalIncomeLastMonth();
 		double deliveryCost = CoreSystem.getDeliveryCost();
 		double serviceFee = CoreSystem.getServiceFee();
@@ -24,7 +24,7 @@ public class TargetProfitMarkUp implements TargetProfitPolicy {
 	}
 	
 	@Override 
-	public void setParam(CoreSystem coreSystem,double targetProfit) throws UnreachableTargetProfitException , PermissionDeniedException{
+	public void setParam(CoreSystem coreSystem,double targetProfit) throws UnreachableTargetProfitException {
 		CoreSystem.setMarkUpPercentage(computeTargetProfitPolicyParam(coreSystem,targetProfit));
 	}
 }

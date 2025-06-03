@@ -37,7 +37,7 @@ public class Manager extends User {
 	}
 
 	
-	public void setTargetProfitPolicy(TargetProfitPolicyType targetProfitPolicy,double targetProfit) throws UndefinedPolicyException, UnreachableTargetProfitException, PermissionDeniedException {
+	public void setTargetProfitPolicy(TargetProfitPolicyType targetProfitPolicy,double targetProfit) throws UndefinedPolicyException, UnreachableTargetProfitException{
 		TargetProfitPolicy TPP = TargetProfitPolicyFactory.createTargetProfitPolicy(targetProfitPolicy);
 		TPP.setParam(coreSystem, targetProfit);
 		CoreSystem.setTargetProfitPolicy(TPP);
@@ -209,7 +209,7 @@ public class Manager extends User {
 		}
 		else throw new RestaurantNotFoundException("The restaurant "+restaurantName+" does not exist!");
 	}
-
+	
 
 	
 	@Override

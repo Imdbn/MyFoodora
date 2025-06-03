@@ -170,11 +170,17 @@ public class Restaurant extends User{
 	public void setGenericDiscount(double genericDiscount) {
 		this.genericDiscount = genericDiscount;
 		NotificationService.getInstance().setOffer(null,this,Offer.GENERICDISCOUNT);
+		for (Meal meal : meals.values()) {
+	        setMealPrice(meal);
+	    }
 	}
 
 	public void setSpecialDiscount(double specialDiscount) {
 		this.specialDiscount = specialDiscount;
 		NotificationService.getInstance().setOffer(null,this,Offer.SPECIALDISCOUNT);
+		for (Meal meal : meals.values()) {
+	        setMealPrice(meal);
+	    }
 	}
 	
 
@@ -243,6 +249,7 @@ public class Restaurant extends User{
 				meal.setMealOfTheWeek(true);
 				this.setMealPrice(meal);
 				NotificationService.getInstance().setOffer(meal,this,Offer.MEALOFTHEWEEK);
+			    
 			}
 		}
 		else throw new ItemNotFoundException("Sorry but the meal you are trying to set as Meal of the Week doesn't exist");
