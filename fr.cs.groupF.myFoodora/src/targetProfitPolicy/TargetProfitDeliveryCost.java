@@ -13,7 +13,7 @@ public class TargetProfitDeliveryCost implements TargetProfitPolicy {
 		int numberOfOrdersLM = coreSystem.computeNumberOfOrdersLastMonth();
 		double deliveryCost = -1;
 		if(numberOfOrdersLM != 0) {
-			deliveryCost = -(totalIncomeLM*markUp + numberOfOrdersLM * serviceFee - targetProfit) / numberOfOrdersLM;
+			deliveryCost = (totalIncomeLM*markUp + numberOfOrdersLM * serviceFee - targetProfit) / numberOfOrdersLM;
 		}
 		else throw new UnreachableTargetProfitException("Target Profit is Unreachable , since there are no Orders Last Month.");
 		if(deliveryCost >= 0) {

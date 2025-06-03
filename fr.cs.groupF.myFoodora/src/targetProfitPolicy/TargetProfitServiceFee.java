@@ -35,7 +35,7 @@ public class TargetProfitServiceFee implements TargetProfitPolicy {
         double serviceFee = -1;
 
         if (numberOfOrdersLM != 0) {
-            serviceFee = - (totalIncomeLM * markUp - numberOfOrdersLM * deliveryCost - targetProfit) / numberOfOrdersLM;
+            serviceFee = (targetProfit - totalIncomeLM * markUp + numberOfOrdersLM * deliveryCost  ) / numberOfOrdersLM;
         } else {
             throw new UnreachableTargetProfitException("Target Profit is Unreachable, since there are no Orders Last Month.");
         }
