@@ -19,7 +19,6 @@ public class FullMeal extends Meal{
 	
 	public void addDishToMeal(Dish dish) throws BadMealCompositionCreationException{
 		this.itemVisitor.visit(dish, this);
-	    mealComposition.add(dish);
 	}
 
 

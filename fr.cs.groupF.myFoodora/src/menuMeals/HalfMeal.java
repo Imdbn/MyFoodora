@@ -24,7 +24,7 @@ public class HalfMeal extends Meal {
     @Override
     public void addDishToMeal(Dish dish) throws BadMealCompositionCreationException {
         this.itemVisitor.visit(dish, this);
-        mealComposition.add(dish);
+        
     }
 
     @Override

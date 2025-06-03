@@ -192,7 +192,7 @@ public class Customer extends User implements Observer {
 	// pay Order that allows the customer to add point to his fidelity card if it happens to be a pOint fidelity card
 	public void payOrder(double price) {
 
-	    System.out.println(String.format("You have paid €%.2f for your order.", price));
+	    System.out.println("You have paid "+ price +"€ for your order.");
 	    System.out.println("");
 
 	    if (this.fidelityCard instanceof PointFidelityCard) {
@@ -201,7 +201,7 @@ public class Customer extends User implements Observer {
 	        pointCard.updatePoints(price);
 
 	        if (numberAddedPts>=1) {
-	        	String pointsMessage = String.format("You earned %d %s!", numberAddedPts, numberAddedPts == 1 ? "fidelity point" : "fidelity points");
+	        	String pointsMessage = "You earned " + numberAddedPts + " " + (numberAddedPts == 1 ? "fidelity point" : "fidelity points") + "!";
 	        	System.out.println(pointsMessage);
 	        }
 	        
@@ -257,12 +257,11 @@ public class Customer extends User implements Observer {
 	        return;
 	    }
 
-	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	    int orderNumber = 1; 
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 
 	    for (Order order : this.orderHistory) {
 	        
-	        System.out.println("\nOrder #" + orderNumber++ + ":");
+	        System.out.println("\nOrder #" + id + ":");
 	        
 	        Calendar orderDate = order.getOrderDate();
 	        String formattedDate = dateFormat.format(orderDate.getTime());
