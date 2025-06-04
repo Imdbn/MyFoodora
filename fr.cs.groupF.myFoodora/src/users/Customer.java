@@ -261,7 +261,7 @@ public class Customer extends User implements Observer {
 
 	    for (Order order : this.orderHistory) {
 	        
-	        System.out.println("\nOrder #" + id + ":");
+	        System.out.println("\nOrder #" + order.getId() + ":");
 	        
 	        Calendar orderDate = order.getOrderDate();
 	        String formattedDate = dateFormat.format(orderDate.getTime());
@@ -274,16 +274,19 @@ public class Customer extends User implements Observer {
 	
 	@Override
 	public String toString() {
-	    return "Customer{" +
-	            "id=" + getId() +
-	            ", name='" + getName() + '\'' +
-	            ", username='" + getUsername() + '\'' +
-	            ", surname='" + surname + '\'' +
-	            ", email='" + email + '\'' +
-	            ", phone='" + phone + '\'' +
-	            ", address=" + address +
-	            '}';
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("\n👤 Customer Details\n");
+	    sb.append("──────────────────────────────\n");
+	    sb.append("🆔 ID        : ").append(getId()).append("\n");
+	    sb.append("👨‍💼 Name     : ").append(getName()).append(" ").append(surname).append("\n");
+	    sb.append("🔑 Username : ").append(getUsername()).append("\n");
+	    sb.append("✉️ Email    : ").append(email).append("\n");
+	    sb.append("📞 Phone    : ").append(phone).append("\n");
+	    sb.append("🏠 Address  : ").append(address != null ? address.toString() : "N/A").append("\n");
+	    sb.append("──────────────────────────────");
+	    return sb.toString();
 	}
+
 	
 	
 

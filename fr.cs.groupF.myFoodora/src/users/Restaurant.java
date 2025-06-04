@@ -290,88 +290,131 @@ public class Restaurant extends User{
 	// Show Sorted FoodItems
 	
 	public void showSortedHalfMeals() {
-		
-		ArrayList<FoodItem> halfMeals = new ArrayList<>();
-	        for (Meal meal : this.meals.values()) {
-	            if (meal instanceof HalfMeal) {
-	                halfMeals.add(meal);
-	            }
+	    ArrayList<FoodItem> halfMeals = new ArrayList<>();
+	    for (Meal meal : this.meals.values()) {
+	        if (meal instanceof HalfMeal) {
+	            halfMeals.add(meal);
 	        }
+	    }
 
 	    OrderedFrequencySorter sorter = new OrderedFrequencySorter();
 	    ArrayList<FoodItem> sortedHalfMeals = sorter.sort(halfMeals);
-		System.out.println("Sorted Half Meals");
-		for (FoodItem item : sortedHalfMeals) {
-			System.out.println(item.getName()+" : ordered "+item.getOrderedFrequency() +(item.getOrderedFrequency()==1 ? " time." : " times."));
-		}
-	}
-	
-	public void showSortedFullMeals() {
-		
-		ArrayList<FoodItem> fullMeals = new ArrayList<>();
-	        for (Meal meal : this.meals.values()) {
-	            if (meal instanceof FullMeal) {
-	                fullMeals.add(meal);
-	            }
+
+	    System.out.println("=== Sorted Half Meals ===");
+	    if (sortedHalfMeals.isEmpty()) {
+	        System.out.println("No half meals available.");
+	    } else {
+	        for (FoodItem item : sortedHalfMeals) {
+	            System.out.printf("%-20s | Ordered: %3d %s%n",
+	                    item.getName(),
+	                    item.getOrderedFrequency(),
+	                    (item.getOrderedFrequency() == 1 ? "time" : "times"));
 	        }
+	    }
+	    System.out.println();
+	}
+
+	public void showSortedFullMeals() {
+	    ArrayList<FoodItem> fullMeals = new ArrayList<>();
+	    for (Meal meal : this.meals.values()) {
+	        if (meal instanceof FullMeal) {
+	            fullMeals.add(meal);
+	        }
+	    }
 
 	    OrderedFrequencySorter sorter = new OrderedFrequencySorter();
-	    ArrayList<FoodItem> sortedfullMeals = sorter.sort(fullMeals);
-		System.out.println("Sorted full Meals");
-		for (FoodItem item : sortedfullMeals) {
-			System.out.println(item.getName()+" : ordered "+item.getOrderedFrequency() +(item.getOrderedFrequency()==1 ? " time." : " times."));
-		}
+	    ArrayList<FoodItem> sortedFullMeals = sorter.sort(fullMeals);
+
+	    System.out.println("=== Sorted Full Meals ===");
+	    if (sortedFullMeals.isEmpty()) {
+	        System.out.println("No full meals available.");
+	    } else {
+	        for (FoodItem item : sortedFullMeals) {
+	            System.out.printf("%-20s | Ordered: %3d %s%n",
+	                    item.getName(),
+	                    item.getOrderedFrequency(),
+	                    (item.getOrderedFrequency() == 1 ? "time" : "times"));
+	        }
+	    }
+	    System.out.println();
 	}
-	
+
 	public void showSortedDishes() {
-		ArrayList<FoodItem> dishes = new ArrayList<>(this.getMenu().getItems().values());
-		OrderedFrequencySorter sorter = new OrderedFrequencySorter();
-		ArrayList<FoodItem> sortedDishes = sorter.sort(dishes);
-		System.out.println("Sorted Dishes");
-		for (FoodItem item : sortedDishes) {
-			System.out.println(item.getName()+" : ordered "+item.getOrderedFrequency() +(item.getOrderedFrequency()==1 ? " time." : " times."));
-		}
+	    ArrayList<FoodItem> dishes = new ArrayList<>(this.getMenu().getItems().values());
+	    OrderedFrequencySorter sorter = new OrderedFrequencySorter();
+	    ArrayList<FoodItem> sortedDishes = sorter.sort(dishes);
+
+	    System.out.println("=== Sorted Dishes ===");
+	    if (sortedDishes.isEmpty()) {
+	        System.out.println("No dishes available.");
+	    } else {
+	        for (FoodItem item : sortedDishes) {
+	            System.out.printf("%-20s | Ordered: %3d %s%n",
+	                    item.getName(),
+	                    item.getOrderedFrequency(),
+	                    (item.getOrderedFrequency() == 1 ? "time" : "times"));
+	        }
+	    }
+	    System.out.println();
 	}
+
 	
 	
 	public void displayRestaurant() {
 	    StringBuilder output = new StringBuilder();
 
-	    output.append("Menu of ").append(this.name).append(":\n");
+	    output.append("=========================================\n");
+	    output.append("         Welcome to ").append(this.name).append("\n");
+	    output.append("=========================================\n\n");
 
+	    // Menu Section
+	    output.append("🧾 MENU:\n");
 	    if (this.menu.getItems().isEmpty()) {
-	        output.append("No items in the menu.\n");
+	        output.append("  ❌ No items in the menu.\n");
 	    } else {
-	        output.append(this.menu.toString()).append("\n"); 
+	        output.append(this.menu.toString()).append("\n");
 	    }
-	    
 
+	    // Meals Section
+	    output.append("🍽️  MEALS:\n");
 	    if (!this.meals.isEmpty()) {
-	        output.append("Meals offered at ").append(this.name).append(":\n");
+	        int index = 1;
 	        for (Meal meal : this.meals.values()) {
-	            output.append(meal.toString()).append("\n");
+	            output.append(String.format("  %d. %s (%.2f€)\n", index++, meal.getName(), meal.getPrice()));
 	        }
 	    } else {
-	        output.append("No meals currently offered.\n");
+	        output.append("  ❌ No meals currently offered.\n");
 	    }
+
+	    output.append("\n=========================================\n");
 
 	    System.out.println(output.toString());
 	}
+
+
 	
 	
 	
 	@Override
 	public String toString() {
-	    return "Restaurant{" +
-	            "id=" + getId() +
-	            ", name='" + getName() + '\'' +
-	            ", username='" + getUsername() + '\'' +
-	            ", location=" + location +
-	            ", genericDiscount=" + genericDiscount +
-	            ", specialDiscount=" + specialDiscount +
-	            ", menu=" + menu +
-	            '}';
+	    StringBuilder sb = new StringBuilder();
+
+	    sb.append("\n📍 Restaurant Details\n");
+	    sb.append("────────────────────────────────────\n");
+	    sb.append("🏷️  ID: ").append(getId()).append("\n");
+	    sb.append("🏠 Name: ").append(getName()).append("\n");
+	    sb.append("👤 Username: ").append(getUsername()).append("\n");
+	    sb.append("📌 Location: ").append(location != null ? location.toString() : "N/A").append("\n");
+	    sb.append("💸 Generic Discount: ").append(genericDiscount * 100).append(" %\n");
+	    sb.append("🎯 Special Discount: ").append(specialDiscount * 100).append(" %\n");
+	    sb.append("📋 Menu Items: ").append(menu != null ? menu.getItems().size() : 0).append(" item(s)\n");
+	    sb.append("🛒 Total Orders Processed: ").append(orderCounter).append("\n");
+	    sb.append("────────────────────────────────────");
+
+	    return sb.toString();
 	}
+
+
 
 	
 	

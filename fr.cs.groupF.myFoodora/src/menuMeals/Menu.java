@@ -89,14 +89,24 @@ public class Menu {
 	@Override
 	public String toString() {
 	    StringBuilder sb = new StringBuilder();
-	    sb.append("Menu Items:\n");
+	    sb.append("\n📜 Menu Items\n");
+	    sb.append("──────────────────────────────\n");
+
 	    if (items.isEmpty()) {
-	        sb.append("No items in the menu.");
+	        sb.append("❌ No items in the menu.\n");
 	    } else {
+	        int index = 1;
 	        for (FoodItem item : items.values()) {
-	            sb.append("- ").append(item.toString()).append("\n");
+	            sb.append(index++)
+	              .append(". 🍽️ ")
+	              .append(item.toString())
+	              .append("\n");
 	        }
 	    }
+
+	    sb.append("──────────────────────────────");
+
 	    return sb.toString();
 	}
+
 }

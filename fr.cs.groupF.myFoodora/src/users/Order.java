@@ -212,7 +212,7 @@ public class Order {
     	
     	// Display the order, along side the price 
     	
-    	System.out.println("Order : ");
+    	
     	System.out.println(this);
     	System.out.println("The price of the order, including service fee, markup percentage and deliveryCost is : "+ this.finalPrice);
 			
@@ -222,33 +222,35 @@ public class Order {
 	@Override
 	public String toString() {
 	    StringBuilder sb = new StringBuilder();
-	    sb.append("Order ID: ").append(id).append("\n");
-	    sb.append("Order Date: ").append(this.orderDate.getTime()).append("\n");
-	    sb.append("Restaurant: ").append(restaurant.getName()).append("\n");
-	    
-	    
-	    int itemIndex = 1;  // Proper use of an integer for indexing
+	    sb.append("====================================\n");
+	    sb.append("            ORDER SUMMARY\n");
+	    sb.append("====================================\n");
+	    sb.append("Order ID     : ").append(id).append("\n");
+	    sb.append("Order Date   : ").append(orderDate.getTime()).append("\n");
+	    sb.append("Restaurant   : ").append(restaurant.getName()).append("\n");
+
+	    int itemIndex = 1;
 
 	    if (!orderedMeals.isEmpty()) {
-	        sb.append("\nMeals Ordered:\n");
+	        sb.append("\n--- Meals Ordered ---\n");
 	        for (Entry<Meal, Integer> entry : orderedMeals.entrySet()) {
-	            sb.append("  ").append(itemIndex++).append(". ").append(entry.getKey().getName())
-	              .append(" - Quantity: ").append(entry.getValue())
-	              .append(", Price per unit: ").append(entry.getKey().getPrice())
-	              .append("\n");
+	            sb.append(String.format("  %d. %-20s | Qty: %-2d | Unit Price: €%.2f\n",
+	                itemIndex++, entry.getKey().getName(), entry.getValue(), entry.getKey().getPrice()));
 	        }
 	    }
-	    
+
 	    if (!orderedDishes.isEmpty()) {
-	        sb.append("\nFood Items Ordered:\n");
+	        sb.append("\n--- Dishes Ordered ---\n");
 	        for (Entry<Dish, Integer> entry : orderedDishes.entrySet()) {
-	            sb.append("  ").append(itemIndex++).append(". ").append(entry.getKey().getName())
-	              .append(" - Quantity: ").append(entry.getValue())
-	              .append(", Price per, unit: ").append(entry.getKey().getPrice())
-	              .append("\n");
+	            sb.append(String.format("  %d. %-20s | Qty: %-2d | Unit Price: €%.2f\n",
+	                itemIndex++, entry.getKey().getName(), entry.getValue(), entry.getKey().getPrice()));
 	        }
 	    }
+
+	    sb.append("====================================\n");
+
 	    return sb.toString();
 	}
+
 
 }

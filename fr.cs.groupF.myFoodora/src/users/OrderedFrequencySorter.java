@@ -5,7 +5,8 @@ import menuMeals.*;
 
 public class OrderedFrequencySorter {
 	public ArrayList<FoodItem> sort(ArrayList<FoodItem> foodItems){
-		foodItems.sort(new OrderedFrequencyComparator());
+		OrderedFrequencyComparator comp = new OrderedFrequencyComparator();
+		foodItems.sort(comp.reversed());
 		return foodItems;
 		
 	}

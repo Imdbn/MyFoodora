@@ -5,7 +5,8 @@ import java.util.*;
 public class CourierSorter {
 	public ArrayList<Courier> sort(Map<String,Courier> couriers){
 		ArrayList<Courier> sortedCouriers = new ArrayList<>(couriers.values());
-		sortedCouriers.sort(new CourierComparator());
+		CourierComparator comp = new CourierComparator();
+		sortedCouriers.sort(comp.reversed());
 		return sortedCouriers;
 		
 	}

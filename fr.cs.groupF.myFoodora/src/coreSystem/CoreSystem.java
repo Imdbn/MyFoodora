@@ -185,6 +185,16 @@ public class CoreSystem {
 		CoreSystem.deliveryPolicy = deliveryPolicy;
 	}
 	
+	public static Optional<User> getCurrentUser() {
+		return currentUser;
+	}
+
+
+
+	public static void setCurrentUser(Optional<User> currentUser) {
+		CoreSystem.currentUser = currentUser;
+	}
+	
 	public static ArrayList<Courier> getOnDutyCouriers(Map<String, Courier> couriersMap) {
         ArrayList<Courier> onDutyList = new ArrayList<>();
         for (Courier courier : couriersMap.values()) {
@@ -203,14 +213,94 @@ public class CoreSystem {
 
 
 
-	public static void addDefaultManagers() {
-		Manager CEO = new Manager("CEO", "Admin", "1234", "Imad");
+	public static void my_Foodora_ini() throws ItemAlreadyExistsException, UndefinedTypeException, BadMealCompositionCreationException, ItemNotFoundException, UndefinedFidelityCardException {
+		Manager CEO = new Manager("CEO", "ceo", "123456789", "Imad");
         Manager deputy = new Manager("Deputy", "admin", "1234", "Farah");
     	managers.put(CEO.getUsername(),CEO);
     	managers.put(deputy.getUsername(),deputy);
-    	System.out.println("Successfully added Default Managers to the system");
+    	
+    	Restaurant chickenPlace = new Restaurant("ChickenPlace", "ChickenPlace", "1234");
+    	
+    	chickenPlace.addDish(FoodFactory.createDish("ShrimpCocktail", false, 6.0, true, DishCategory.STARTER));
+        chickenPlace.addDish(FoodFactory.createDish("GrilledChicken", false, 12.0, true, DishCategory.MAINDISH));
+        chickenPlace.addDish(FoodFactory.createDish("IceCream", false, 5.0, true, DishCategory.DESSERT));
+        
+        Meal halfMeal = chickenPlace.createMeal("ChickenAndIceCream", MealType.HALF);
+        Meal fullMeal = chickenPlace.createMeal("ChickenSpecial", MealType.FULL);
+        
+        chickenPlace.addMeal(fullMeal);
+        chickenPlace.addMeal(halfMeal);
+        
+        chickenPlace.addDishToMeal("ChickenAndIceCream","GrilledChicken");
+        chickenPlace.addDishToMeal("ChickenAndIceCream","IceCream");
+        
+        chickenPlace.addDishToMeal("ChickenSpecial", "GrilledChicken");
+        chickenPlace.addDishToMeal("ChickenSpecial", "IceCream");
+        chickenPlace.addDishToMeal("ChickenSpecial", "ShrimpCocktail");
+        
+        chickenPlace.setMealPrice(fullMeal);
+        chickenPlace.setMealPrice(halfMeal);
+        
+        restaurants.put(chickenPlace.getUsername(),chickenPlace);
+        
+        Restaurant burgerPlace = new Restaurant("BurgerPlace", "BurgerPlace", "1234");
+
+        
+        burgerPlace.addDish(FoodFactory.createDish("Burger", false, 10.0, false, DishCategory.MAINDISH));
+        burgerPlace.addDish(FoodFactory.createDish("Fries", false, 5.0, false, DishCategory.STARTER));
+        burgerPlace.addDish(FoodFactory.createDish("Coke", false, 5.0, false, DishCategory.DESSERT));
+
+        
+        Meal halfMeal_ = burgerPlace.createMeal("BurgerAndFries", MealType.HALF);
+        Meal fullMeal_ = burgerPlace.createMeal("BurgerFriesAndCoke", MealType.FULL);
+        burgerPlace.addMeal(fullMeal_);
+        burgerPlace.addMeal(halfMeal_);
+        
+        
+        burgerPlace.addDishToMeal("BurgerAndFries", "Burger");
+        burgerPlace.addDishToMeal("BurgerFriesAndCoke", "Burger");
+        burgerPlace.addDishToMeal("BurgerAndFries", "Fries");
+        burgerPlace.addDishToMeal("BurgerFriesAndCoke", "Fries");
+        burgerPlace.addDishToMeal("BurgerFriesAndCoke", "Coke");
+        
+        burgerPlace.setMealPrice(fullMeal_);
+        burgerPlace.setMealPrice(halfMeal_);
+        restaurants.put(burgerPlace.getUsername(),burgerPlace);
+        
+        Customer customer = new Customer("Hmad", "hmad_lvista", "1234", "vista");
+        Customer customer2 = new Customer("meryam", "Meryam_queen", "abcd", "city");
+        Courier courier = new Courier("Aziz", "aziz", "1234", "azoz", "0232134");
+        Courier courier2 = new Courier("habil", "Hobo", "1234", "hoho", "0232134");
+        
+        courier.setOnDuty(true);
+        
+        customers.put(customer.getUsername(),customer);
+        customers.put(customer2.getUsername(), customer2);
+        couriers.put(courier.getUsername(), courier);
+        couriers.put(courier2.getUsername(), courier2);
+        
+        
+    	
 	}
 	
+	
+	
+	
+
+
+
+	public static Optional<UserType> getCurrentUserType() {
+		return currentUserType;
+	}
+
+
+
+	public static void setCurrentUserType(Optional<UserType> currentUserType) {
+		CoreSystem.currentUserType = currentUserType;
+	}
+
+
+
 	public double computeTotalIncomeLastMonth() {
 		Calendar now = Calendar.getInstance();
 		Calendar lastMonth = (Calendar) now.clone();
@@ -498,7 +588,16 @@ public class CoreSystem {
     	}
     	else throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Customer have Permission to use it");
     }
-
+    public void removeConsensus() throws PermissionDeniedException {
+        if (currentUserType.orElse(UserType.GUEST) == UserType.CUSTOMER ) {
+            Customer customer = (Customer) currentUser.get();
+            customer.setConsensus(false);
+        } else {
+            throw new PermissionDeniedException(
+                "Sorry, But you don't have the permission for said method, only Users of type Customer have Permission to use it."
+            );
+        }
+    }
     public Order placeOrder(String restaurantName) throws PermissionDeniedException, RestaurantNotFoundException{
     	if (currentUserType.orElse(UserType.GUEST) == UserType.CUSTOMER) {
     		Order order = ((Customer)currentUser.get()).placeOrder(restaurantName);
@@ -520,15 +619,19 @@ public class CoreSystem {
     }
     
     public void endOrder(Order order) throws NoCourierIsAvailableException, ItemNotFoundException, PermissionDeniedException {
-    	if (currentUserType.orElse(UserType.GUEST) == UserType.CUSTOMER) {
-    		if(customerOrders.contains(order)) {
-    			((Customer)currentUser.get()).endOrder(order);;
-    		}
-    		else throw new ItemNotFoundException("Sorry there is no such Order for the current logged in customer.");
-    		
-    	}
-    	else throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Customer have Permission to use it");
+        if (currentUserType.orElse(UserType.GUEST) == UserType.CUSTOMER) {
+            Customer customer = (Customer) currentUser.get();
+            if (customerOrders.contains(order)) {
+                customer.endOrder(order);
+                customerOrders.remove(order);  // Remove order from customerOrders after ending it
+            } else {
+                throw new ItemNotFoundException("Sorry there is no such Order for the current logged in customer.");
+            }
+        } else {
+            throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Customer have Permission to use it");
+        }
     }
+
 
     public void displayHistoryOrders() throws PermissionDeniedException {
  		if (currentUserType.orElse(UserType.GUEST) == UserType.CUSTOMER) {
@@ -703,7 +806,7 @@ public class CoreSystem {
     
     public void removeFromSpecialOffer(String mealName) throws  PermissionDeniedException, ItemNotFoundException{
     	if (currentUserType.orElse(UserType.GUEST) == UserType.RESTAURANT)  {
-    		((Restaurant)currentUser.get()).setSpecialOffer(mealName);
+    		((Restaurant)currentUser.get()).removeFromSpecialOffer(mealName);
     	}
     	else
     		throw new PermissionDeniedException("Sorry, But you don't have the permission for said method, only Users of type Restaurant have Permission to use it");

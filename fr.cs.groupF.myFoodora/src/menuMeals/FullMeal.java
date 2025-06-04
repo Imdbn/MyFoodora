@@ -26,13 +26,20 @@ public class FullMeal extends Meal{
 	
 	@Override
 	public String toString() {
-		String s = "The meal '" + this.name + "' is composed of : ";
-		for (int i=0;i<this.mealComposition.size()-1;i++) {
-			s += this.mealComposition.get(i).getName() +", ";
-		}
-		if (!this.mealComposition.isEmpty())
-			s+=this.mealComposition.get(this.mealComposition.size()-1).getName()+".";
-		return s ;
-		}
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("\n🍱 Meal: ").append(this.name).append("\n");
+	    sb.append("────────────────────────────\n");
+
+	    if (mealComposition.isEmpty()) {
+	        sb.append("⚠️  This meal contains no dishes.\n");
+	    } else {
+	        sb.append("📋 Composition:\n");
+	        for (int i = 0; i < mealComposition.size(); i++) {
+	            sb.append("  ").append(i + 1).append(". ").append(mealComposition.get(i).getName()).append("\n");
+	        }
+	    }
+
+	    return sb.toString();
+	}
 	
 }

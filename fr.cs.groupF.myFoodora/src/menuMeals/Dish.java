@@ -44,15 +44,20 @@ public class Dish extends FoodItem {
 	     this.category = category;
 	    }
 	 @Override
-	    public String toString() {
-	        return "Dish {\n" +
-	               "  id=" + getId() + ",\n" +
-	               "  name='" + getName() + "',\n" +
-	               "  category=" + category + ",\n" +
-	               "  vegetarian=" + isVegetarian() + ",\n" +
-	               "  glutenFree=" + isGlutenFree() + ",\n" +
-	               "  price=" + price + "\n" +
-	               '}';
-	    }
-	
+	 public String toString() {
+	     return String.format(
+	         "\n🍽️ Dish: %s (ID: %d)\n" +
+	         "────────────────────────────\n" +
+	         "📦 Category     : %s\n" +
+	         "🥗 Vegetarian   : %s\n" +
+	         "🌾 Gluten-Free  : %s\n" +
+	         "💰 Price        : %.2f €\n",
+	         getName(), getId(),
+	         category,
+	         isVegetarian() ? "Yes" : "No",
+	         isGlutenFree() ? "Yes" : "No",
+	         price
+	     );
+	 }
+
 }

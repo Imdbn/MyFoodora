@@ -153,15 +153,18 @@ public class Courier extends User {
      */
     @Override
     public String toString() {
-        return "Courier{" +
-                "id=" + getId() +
-                ", name='" + getName() + '\'' +
-                ", username='" + getUsername() + '\'' +
-                ", surname='" + surname + '\'' +
-                ", position=" + position +
-                ", phone='" + phone + '\'' +
-                ", deliveries=" + deliveryCounter +
-                ", onDuty=" + onDuty +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n🚴‍♂️ Courier Details\n");
+        sb.append("──────────────────────────────\n");
+        sb.append("🆔 ID          : ").append(getId()).append("\n");
+        sb.append("👤 Name        : ").append(getName()).append(" ").append(surname).append("\n");
+        sb.append("🔑 Username    : ").append(getUsername()).append("\n");
+        sb.append("💼 Position    : ").append(position).append("\n");
+        sb.append("📞 Phone       : ").append(phone).append("\n");
+        sb.append("📦 Deliveries  : ").append(deliveryCounter).append("\n");
+        sb.append("⏰ On Duty     : ").append(onDuty ? "Yes" : "No").append("\n");
+        sb.append("──────────────────────────────");
+        return sb.toString();
     }
+
 }
