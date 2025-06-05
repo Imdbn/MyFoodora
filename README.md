@@ -24,11 +24,11 @@ Run the project by executing the `Main` class located in the `interface` package
 
 To execute a test scenario, enter one of the following commands in the CLI:
 ```java
-runTest("TestScenario.txt");
+runTest TestScenario.txt
 ```
 or
 ```java
-runTest("TestScenario1.txt");
+runTest TestScenario1.txt
 ```
 depending on which scenario you want to run.
 
