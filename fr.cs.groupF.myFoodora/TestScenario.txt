@@ -1,0 +1,45 @@
+login ceo 123456789
+registerCourier aymen maftouh amaftouh 1234 0766689
+logout
+login hmad_lvista 1234
+createOrder BurgerPlace order
+createOrder BurgerPlace order2
+addItem2Order order Burger 5
+addItem2Order order2 BurgerAndFries 10
+endOrder order
+endOrder order2
+createOrder BurgerPlace order1
+addItem2Order order1 Burger 1
+endOrder order1
+logout
+login ceo 123456789
+showCourierDeliveries
+setDeliveryPolicy FAIR
+logout
+login Meryam_queen abcd
+setConsensusPhone 1234567
+createOrder ChickenPlace order
+addItem2Order order ChickenSpecial 4
+endOrder order
+registerFidelityCard Point
+createOrder BurgerPlace order2
+addItem2Order order2 Burger 10
+endOrder order2
+createOrder ChickenPlace order4
+addItem2Order order4 ChickenAndIceCream 2
+endOrder order4
+logout
+login ceo 123456789
+showCourierDeliveries
+showTotalProfit
+setProfitPolicy MARKUP 110
+logout
+login BurgerPlace 1234
+setSpecialDiscountFactor 0.15
+setSpecialOffer BurgerAndFries
+logout
+login Meryam_queen abcd
+logout 
+login ceo 123456789
+showCustomers
+showRestaurantTop

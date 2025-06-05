@@ -40,10 +40,12 @@ public class HalfMeal extends Meal {
             for (int i = 0; i < mealComposition.size(); i++) {
                 sb.append("  ").append(i + 1).append(". ").append(mealComposition.get(i).getName()).append("\n");
             }
+            sb.append("💰 Total Price: ").append(String.format("%.2f", getPrice())).append(" €\n");
         }
 
         return sb.toString();
     }
+
 
 }
 

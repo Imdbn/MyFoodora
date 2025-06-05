@@ -143,10 +143,12 @@ public class Order {
 	public void addItemToOrder(String foodItemName, Integer quantity) throws ItemNotFoundException {
 		if(this.restaurant.getMenu().getItems().containsKey(foodItemName)) {
 			Dish dish = this.restaurant.getMenu().getItems().get(foodItemName);
+			dish.setOrderedFrequency(quantity);
 			orderedDishes.put(dish,quantity);
 		}
 		else if(this.restaurant.getMeals().containsKey(foodItemName)) {
 			Meal meal = this.restaurant.getMeals().get(foodItemName);
+			meal.setOrderedFrequency(quantity);
 			orderedMeals.put(meal, quantity);
 		}
 		else throw new ItemNotFoundException("The Item that you tried to add to your Order doesn't exist");
@@ -197,17 +199,7 @@ public class Order {
     	this.computeFinalPrice();
     	
     	
-    	/*
-    	 * Update ordered frequency of chosen items of this submitted order!
-    	 */
     	
-    	for (Entry<Meal, Integer> entry : orderedMeals.entrySet())  {
-    		entry.getKey().incrementOrderedFrequency();
-    	}
-    	
-    	for (Entry<Dish, Integer> entry : orderedDishes.entrySet()) {
-    		entry.getKey().incrementOrderedFrequency();
-    	}
     	
     	
     	// Display the order, along side the price 

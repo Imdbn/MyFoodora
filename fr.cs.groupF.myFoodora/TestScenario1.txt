@@ -1,0 +1,52 @@
+login ceo 123456789
+setDeliveryPolicy Fair
+registerRestaurant SushiPlace SushiPlace 1234
+registerCustomer khozozo Frida Frida 1234
+associateCard bogoss Point
+associateCard Frida Point
+createOrder BurgerPlace order
+logout
+login Frida 1234
+setConsensusMail khozo@gmail.com
+logout
+login SushiPlace 1234
+addDishRestaurantMenu Sushi MAINDISH Vegetarian yes 10
+addDishRestaurantMenu Salade STARTER Vegetarian yes 5
+addDishRestaurantMenu Coke Dessert Vegetarian yes 5
+addDishRestaurantMenu IceCream Dessert Vegetarian no 5
+createMeal SushiSpecial full vegetarian yes
+addDish2Meal Sushi SushiSpecial
+addDish2Meal Salade SushiSpecial
+addDish2Meal IceCream SushiSpecial
+addDish2Meal Coke SushiSpecial
+showMeal SushiSpecial
+createMeal HalfSushi half
+addDish2Meal Coke HalfSushi
+addDish2Meal IceCream HalfSushi
+addDish2Meal Salade HalfSushi
+addDish2Meal Sushi HalfSushi
+showMeal HalfSushi
+setSpecialOffer HalfSushi
+setSpecialDiscountFactor 0.15
+showMenu
+logout
+login Frida 1234 
+createOrder SushiPlace order
+addItem2Order order Sushi 10
+addItem2Order order SushiSpecial 2
+addItem2Order order HalfSushi 5
+createOrder BurgerPlace order2
+addItem2Order order2 Burger 10
+endOrder order
+endOrder order2
+displayFidelityCardInfo
+logout
+login SushiPlace 1234
+showSortedDishes
+showSortedFullMeals
+logout
+login ceo 123456789
+showTotalProfit
+showRestaurantTop
+showCourierDeliveries
+logout

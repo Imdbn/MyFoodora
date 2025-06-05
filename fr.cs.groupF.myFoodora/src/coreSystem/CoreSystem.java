@@ -273,7 +273,7 @@ public class CoreSystem {
         Courier courier2 = new Courier("habil", "Hobo", "1234", "hoho", "0232134");
         
         courier.setOnDuty(true);
-        
+        courier2.setOnDuty(true);
         customers.put(customer.getUsername(),customer);
         customers.put(customer2.getUsername(), customer2);
         couriers.put(courier.getUsername(), courier);

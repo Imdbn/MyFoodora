@@ -11,9 +11,9 @@ public class DeliveryPolicyFactory {
 	
 	public static DeliveryPolicy createDeliveryPolicy(DeliveryPolicyType deliveryPolicy) throws UndefinedPolicyException {
 		switch (deliveryPolicy) {
-        case FASTEST:
-            return new FairOccupation();
         case FAIR:
+            return new FairOccupation();
+        case FASTEST:
             return new Fastest();
         default:
             throw new UndefinedPolicyException("Unknown policy type: " + deliveryPolicy);

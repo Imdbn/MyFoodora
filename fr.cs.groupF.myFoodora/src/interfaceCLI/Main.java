@@ -1,6 +1,7 @@
 package interfaceCLI;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
@@ -28,8 +29,6 @@ private static Map<String, Order> orderNameMap = new HashMap<>();
 		    } catch (Exception e) {
 		        System.out.println("Error during system initialization: " + e.getMessage());
 		        e.printStackTrace();
-		        // Optionally, you can exit here if initialization is critical
-		        // System.exit(1);
 		    }
 		Scanner scanner = new Scanner(System.in);
 	
@@ -50,33 +49,44 @@ private static Map<String, Order> orderNameMap = new HashMap<>();
 	
 		scanner.close();
 	}
-	public static void runTestFile(String filePath) {
-        FileReader file = null;
-        BufferedReader reader = null;
-        int i = 1;
+	public static void runTestFile(String fileName) {
+	    FileReader file = null;
+	    BufferedReader reader = null;
+	    int i = 1;
 
-        try {
-            file = new FileReader(filePath);
-            reader = new BufferedReader(file);
-            String line;
+	    try {
+	        // Print current working directory
+	        System.out.println("🔍 Looking for file in: " + new File(".").getAbsolutePath());
 
-            while ((line = reader.readLine()) != null) {
-                System.out.println(i + " - " + line);
-                handleCommand(line);
-                System.out.println();
-                i++;
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Error reading file: " + filePath, e);
-        } finally {
-            try {
-                if (reader != null) reader.close();
-                if (file != null) file.close();
-            } catch (IOException e) {
-                System.out.println("Error closing file: " + filePath);
-            }
-        }
-    }
+	        
+	        file = new FileReader(fileName);
+
+	        
+	        reader = new BufferedReader(file);
+	        String line = "";
+
+	        
+	        while ((line = reader.readLine()) != null) {
+	            System.out.println(i + " - " + line);
+	            handleCommand(line);
+	            System.out.println();
+	            i++;
+	        }
+	    } catch (Exception e) {
+	        throw new RuntimeException(e);
+	    } finally {
+	        if (file != null) {
+	            try {
+	                file.close();
+	                reader.close();
+	            } catch (IOException e) {
+	                System.out.println("File not found: " + fileName);
+	                
+	            }
+	        }
+	    }
+	}
+
 	
 	public static void welcomeUser() {
 	    System.out.println("===============================================");
@@ -93,6 +103,7 @@ private static Map<String, Order> orderNameMap = new HashMap<>();
 	private static void printHelp() {
 	    System.out.println("Available commands:\n");
 	    System.out.println("runTest <testScenarioFile> - Execute commands from a scenario file.\n");
+	    System.out.println("runtest <testScenarioFile> - Execute commands from a scenario file.\n");
 	    System.out.println("login <username> <password> - Log in with specified credentials.");
 	    System.out.println("logout - Log out of the current session.");
 	    System.out.println("----------------------------------------");
@@ -153,6 +164,18 @@ private static Map<String, Order> orderNameMap = new HashMap<>();
 		            }
 		        } else {
 		            System.out.println("Usage: runTest <testScenario-file>");
+		        }
+		        break;
+	    	case "runtest":
+		        if (parts.length == 2) {
+		            String testFilePath = parts[1];
+		            try {
+		                runTestFile(testFilePath);
+		            } catch (Exception e) {
+		                System.out.println("Error running test file: " + e.getMessage());
+		            }
+		        } else {
+		            System.out.println("Usage: runtest <testScenario-file>");
 		        }
 		        break;
 	        case "help":
@@ -323,7 +346,7 @@ private static Map<String, Order> orderNameMap = new HashMap<>();
 	                    System.out.println("Failed to set delivery policy: " + e.getMessage());
 	                }
 	            } else {
-	                System.out.println("Usage: setDeliveryPolicy <DELIVERY_POLICY_TYPE>");
+	                System.out.println("Usage: setDeliveryPolicy <DELIVERY_POLICY_TYPE> (FASTEST or FAIR)");
 	            }
 	            break;
 
@@ -347,7 +370,7 @@ private static Map<String, Order> orderNameMap = new HashMap<>();
 	                    System.out.println("Failed to set profit policy: " + e.getMessage());
 	                }
 	            } else {
-	                System.out.println("Usage: setProfitPolicy <TARGET_PROFIT_POLICY_TYPE> <target>");
+	                System.out.println("Usage: setProfitPolicy <TARGET_PROFIT_POLICY_TYPE>(SERVICEFEE , MARKUP or DELIVERYCOST) <target>");
 	            }
 	            break;
 
@@ -362,7 +385,7 @@ private static Map<String, Order> orderNameMap = new HashMap<>();
 	                } catch (IllegalArgumentException e) {
 	                    System.out.println("Invalid card type: " + cardTypeStr);
 	                } catch (Exception e) {
-	                    System.out.println(e.getMessage());
+	                    System.out.println("User doesn't exist");
 	                }
 	            } else {
 	                System.out.println("Usage : associateCard <userName> <cardType>");
@@ -553,7 +576,7 @@ private static Map<String, Order> orderNameMap = new HashMap<>();
 	                    System.out.println("An unexpected error occurred while registering the fidelity card: " + e.getMessage());
 	                }
 	            } else {
-	                System.out.println("Usage: registerFidelityCard <cardType>");
+	                System.out.println("Usage: registerFidelityCard <cardType> (POINT , BASIC or LOTTERY)");
 	            }
 	            break;
 	            
@@ -658,7 +681,7 @@ private static Map<String, Order> orderNameMap = new HashMap<>();
 	                }
 
 	            } else {
-	                System.out.println("Usage : addDishRestaurantMenu <dishName> <dishCategory> <foodType> <glutenFree (yes or no)> <unitPrice>");
+	                System.out.println("Usage : addDishRestaurantMenu <dishName> <dishCategory>(STARTER , MAINDISH or DESSERT) <foodType>(Vegetarian or Non-Vegetarian) <glutenFree (yes or no)> <unitPrice>");
 	            }
 	            break;
 
@@ -840,12 +863,12 @@ private static Map<String, Order> orderNameMap = new HashMap<>();
 	                customer.update(restaurant, Offer.MEALOFTHEWEEK, meal);
 	            }
 	        }
-	        // Notify generic discount if > 0
-	        if (restaurant.getGenericDiscount() > 0) {
+	        // Notify generic discount if generic discount is higher than default value (0.05)
+	        if (restaurant.getGenericDiscount() > 0.05) {
 	            customer.update(restaurant, Offer.GENERICDISCOUNT, null);
 	        }
-	        // Notify special discount if > 0
-	        if (restaurant.getSpecialDiscount() > 0) {
+	        // Notify special discount if special discount is higher than default value (0.1)
+	        if (restaurant.getSpecialDiscount() > 0.1) {
 	            customer.update(restaurant, Offer.SPECIALDISCOUNT, null);
 	        }
 	    }

@@ -1,0 +1,16 @@
+login ceo 123456789
+setDeliveryPolicy Fair
+logout
+login hmad_lvista 1234
+createOrder BurgerPlace order
+createOrder BurgerPlace order2
+addItem2Order order Burger 5
+addItem2Order order2 BurgerAndFries 10
+endOrder order
+endOrder order2
+createOrder BurgerPlace order1
+addItem2Order order1 Burger 1
+endOrder order1
+logout
+login ceo 123456789
+showCourierDeliveries
